@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>coav</Title>
+      <Shortcut>coav</Shortcut>
+      <Description>Create view</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>view_name</ID>
+          <ToolTip />
+          <Default>[schema].[view_name]</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[create or alter view $view_name$
+--WITH ENCRYPTION, SCHEMABINDING, VIEW_METADATA
+as
+    $SELECTEDTEXT$$CURSOR$
+-- WITH CHECK OPTION
+go
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

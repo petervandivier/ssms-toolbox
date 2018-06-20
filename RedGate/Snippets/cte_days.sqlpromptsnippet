@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>cte_days</Title>
+      <Shortcut>cte_days</Shortcut>
+      <Description>90 days worth of days</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[;with day_rng as (
+    select cast(getdate() as date) as dt
+    union all 
+    select dateadd(day,-1,dt)
+    from day_rng
+    where dt>dateadd(day,-90,getdate())
+)
+select *
+from day_rng]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

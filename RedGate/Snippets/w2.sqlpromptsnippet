@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>w2</Title>
+      <Shortcut>w2</Shortcut>
+      <Description>Execute sp_who2</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[drop table if exists #spwho2;
+
+create table #spwho2 (
+    SPID        int not null,
+    [Status]    nvarchar(128),
+    [Login]     nvarchar(128),
+    HostName    nvarchar(128),
+    BlkBy       nvarchar(128),
+    DBName      nvarchar(128),
+    Command     nvarchar(128),
+    CPUTime     bigint,
+    DiskIO      bigint,
+    LastBatch   nvarchar(128),
+    ProgramName nvarchar(1000),
+    _SPID       int,
+    RequestID   int
+);
+
+insert #spwho2 ( 
+    SPID, Status, Login, HostName,
+    BlkBy, DBName, Command, CPUTime,
+    DiskIO, LastBatch, ProgramName,
+    _SPID, RequestID )
+exec sys.sp_who2;
+
+update #spwho2 set LastBatch = replace( replace( convert(char(4), year(getutcdate())) + '/' + LastBatch, ' ', 'T'), '/', '-');
+alter table #spwho2 alter column LastBatch datetime;
+
+select *
+from   #spwho2 s
+where s.SPID > 50
+--    and s.[Login] = '$USER$'
+--    and s.HostName = '$MACHINE$'
+--    and s.DBName = '$DBNAME$'
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

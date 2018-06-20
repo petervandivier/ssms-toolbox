@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ctf</Title>
+      <Shortcut>ctf</Shortcut>
+      <Description>create table foo()</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[--drop table if exists foo;
+create table foo ( 
+    i int identity not null primary key,
+    bar varchar(10)
+);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

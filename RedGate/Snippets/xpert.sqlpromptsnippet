@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>xpert</Title>
+      <Shortcut>xpert</Shortcut>
+      <Description>xp_readerrorlog to table</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[drop table if exists #xper;
+create table #xper (id int identity primary key, LogNo tinyint, LogDate datetime, ProcessInfo nvarchar(12), [Text] nvarchar(3999));
+
+declare @i tinyint = 0
+insert #xper (LogDate, ProcessInfo, [Text])
+exec xp_readerrorlog @i;
+update #xper set LogNo = @i where LogNo is null; 
+
+-- select top(10) ','''+replace(left([Text],21),'''','''''')+'''' , count(*) from #xper group by left([Text],21) order by 2 desc
+
+select * --,','''+replace(left([Text],21),'''','''''')+''''
+from #xper
+where left([Text],21) not in (
+         '[INFO] Database ID: [' -- SB spam
+        ,'DBCC TRACEOFF 3604, s' -- SQLPrompt
+        ,'DBCC TRACEON 3604, se' -- SQLPrompt
+        )
+-- select top(1) [text] from sys.messages where language_id = 1033 and message_id = 33308
+    and [Text] not like 'The queue % in database % has activation enabled and contains unlocked messages but no RECEIVE has been executed for % seconds.' -- SB spam
+order by LogDate desc;
+
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

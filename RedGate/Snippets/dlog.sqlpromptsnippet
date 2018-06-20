@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>dlog</Title>
+      <Shortcut>dlog</Shortcut>
+      <Description>dbcc sqlperf(logspace)</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[-- https://docs.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-sqlperf-transact-sql
+drop table if exists #sqlperf_logspace;
+create table #sqlperf_logspace (
+    id         int not null identity primary key,
+    db sysname unique,
+    size_mb    decimal(10,2),
+    pct_full   decimal(10,2),
+    _status    tinyint check (_status=0)
+);
+
+insert #sqlperf_logspace (db,size_mb,pct_full,_status)
+exec (N'dbcc sqlperf(logspace) with no_infomsgs;');
+
+select sl.*, d.log_reuse_wait_desc 
+from #sqlperf_logspace sl
+left join sys.databases d on d.[name] = sl.db
+order by pct_full desc;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

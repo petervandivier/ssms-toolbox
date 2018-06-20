@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>d12</Title>
+      <Shortcut>d12</Shortcut>
+      <Description>decimal(10,2)</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[decimal(10,2)]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

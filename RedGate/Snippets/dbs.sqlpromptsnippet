@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>dbs</Title>
+      <Shortcut>dbs</Shortcut>
+      <Description>SSF sys.dbs</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[select d.log_reuse_wait_desc,* 
+from sys.databases d
+--where d.name = '$DBNAME$']]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

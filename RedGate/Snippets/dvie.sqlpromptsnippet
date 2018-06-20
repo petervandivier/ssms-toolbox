@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>dvie</Title>
+      <Shortcut>dvie</Shortcut>
+      <Description>Drop view IF EXISTS</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[drop view if exists ]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

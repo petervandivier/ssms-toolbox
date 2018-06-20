@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>dtie</Title>
+      <Shortcut>dtie</Shortcut>
+      <Description>DROP TABLE IF EXISTS</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[drop table if exists ]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

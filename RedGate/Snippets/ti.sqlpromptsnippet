@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ti</Title>
+      <Shortcut>ti</Shortcut>
+      <Description>Scheduler.Task</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[select * 
+from scheduler.Task t 
+where $CURSOR$$PASTE$;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

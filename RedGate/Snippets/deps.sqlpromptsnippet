@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>deps</Title>
+      <Shortcut>deps</Shortcut>
+      <Description>sysdepends</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[select distinct
+    object_schema_name(id)+'.'+object_name(id) as name,
+    object_definition(id) as def
+from sys.sysdepends s
+where s.depid = object_id('$CURSOR$')
+    --and object_definition(id) like '%%'
+order by 1;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

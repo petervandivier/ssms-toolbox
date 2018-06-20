@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>rcbr</Title>
+      <Shortcut>rcbr</Shortcut>
+      <Description>Rowcout-by-range (timeseries) for 2 arbitrary tables</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>table_a</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>column_a</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>table_b</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>column_b</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>partition_data_type</ID>
+          <ToolTip />
+          <Default>datetime2(3)</Default>
+        </Literal>
+        <Literal>
+          <ID>method</ID>
+          <ToolTip />
+          <Default>-- </Default>
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[
+create or alter proc #getRowCountForRange
+     @start     datetime2(3)
+    ,@end       datetime2(3)
+    ,@method    varchar(11) = 'COUNT_STAR' -- 'PARTITIONS','DMV'
+    ,@rc_a      bigint      output
+    ,@rc_b      bigint      output
+    ,@size_mb_a float       output
+    ,@size_mb_b float       output
+as 
+begin;
+
+    if @method = 'COUNT_STAR'
+    begin
+        select @rc_a = count_big(*) 
+        from $table_a$
+        where $column_a$ >= @start 
+            and $column_a$  < @end;
+
+        select @rc_b = count_big(*) 
+        from $table_b$ 
+        where $column_b$ >= @start 
+            and $column_b$ < @end;
+    end
+
+    if @method = 'DMV' -- TODO: make this useful
+    begin;
+        select @rc_a      = sum(iif(index_id in (0,1),row_count,0))
+              ,@size_mb_a = sum(used_page_count*8192.)/power(1024.,2)
+        from sys.dm_db_partition_stats
+        where [object_id] = object_id('$table_a$');
+
+        select @rc_b      = sum(iif(index_id in (0,1),row_count,0))
+              ,@size_mb_b = sum(used_page_count*8192.)/power(1024.,2)
+        from sys.dm_db_partition_stats
+        where [object_id] = object_id('$table_b$');
+    end;
+    
+    if @method = 'PARTITIONS'
+    begin;
+		
+		select 
+		     @rc_a = sum(iif(s.index_id in (0,1),s.row_count,0))
+		    ,@size_mb_a = sum(s.used_page_count*8192.)/power(1024.,2)
+		from sys.dm_db_partition_stats s
+		join sys.partitions p on p.[partition_id] = s.[partition_id]
+		join sys.indexes i 
+		    on p.[object_id] = i.[object_id]
+		    and p.index_id = i.index_id
+		left join sys.partition_schemes ps on ps.data_space_id = i.data_space_id
+		join sys.partition_functions pf on pf.function_id = ps.function_id
+		join sys.partition_range_values prv
+		    on prv.boundary_id = s.partition_number
+		    and prv.function_id = pf.function_id
+		where s.[object_id] = object_id('$table_a$')
+			and try_cast(prv.[value] as $partition_data_type$) = @start;
+
+		select 
+		     @rc_b = sum(iif(s.index_id in (0,1),s.row_count,0))
+		    ,@size_mb_b = sum(s.used_page_count*8192.)/power(1024.,2)
+		from sys.dm_db_partition_stats s
+		join sys.partitions p on p.[partition_id] = s.[partition_id]
+		join sys.indexes i 
+		    on p.[object_id] = i.[object_id]
+		    and p.index_id = i.index_id
+		left join sys.partition_schemes ps on ps.data_space_id = i.data_space_id
+		join sys.partition_functions pf on pf.function_id = ps.function_id
+		join sys.partition_range_values prv
+		    on prv.boundary_id = s.partition_number
+		    and prv.function_id = pf.function_id
+		where s.[object_id] = object_id('$table_b$')
+			and try_cast(prv.[value] as $partition_data_type$) = @start;
+    end;
+end;
+go
+
+set nocount on;
+--set lock_timeout 1000;
+--set xact_abort on;
+
+drop table if exists ##range_ONITVW;
+create table ##range_ONITVW (
+     _start          datetime2(3) not null primary key
+    ,_end            datetime2(3) not null unique
+    ,check (_start < _end)
+    ,row_count_a     int
+    ,row_count_b     int
+    ,size_mb_a       decimal(10,2)
+    ,size_mb_b       decimal(10,2)
+    ,is_range_closed bit not null default 0 -- allow for stop/restart
+    ,dt_upd          datetime2(3)
+);
+
+insert ##range_ONITVW(_start, _end)
+exec ('select start_dt, end_dt from ##batch_bounds_ONITVW;');
+-- select * from ##range_ONITVW
+
+declare 
+     @start        datetime2(3)
+    ,@end          datetime2(3)
+    ,@row_count_a  bigint
+    ,@row_count_b  bigint
+    ,@size_mb_a    float
+    ,@size_mb_b    float;
+
+/*
+exec dbo.#getRowCountForRange 
+     @start = '2013-01-01'
+    ,@end   = '2013-02-01'
+    ,@method = 'COUNT_STAR'
+    ,@rc_a  = @row_count_a out
+    ,@rc_b  = @row_count_b out
+    ,@size_mb_a = @size_mb_a out
+    ,@size_mb_b = @size_mb_b out; 
+
+select
+	 row_count_a = @row_count_a
+    ,row_count_b = @row_count_b
+    ,size_mb_a   = @size_mb_a
+    ,size_mb_b   = @size_mb_b
+    ,is_range_closed = 1
+*/
+
+declare crs_RC cursor for
+    select _start,_end 
+    from ##range_ONITVW 
+    where is_range_closed=0;
+
+open crs_RC;
+
+fetch next from crs_RC into @start, @end
+
+while @@fetch_status = 0
+begin;
+    declare @rc_a bigint
+       ,@rc_b     bigint;
+    
+    exec dbo.#getRowCountForRange
+		$method$@method = 'PARTITIONS',
+        @start = @start
+       ,@end   = @end
+       ,@rc_a  = @row_count_a out
+       ,@rc_b  = @row_count_b out
+       ,@size_mb_a = @size_mb_a out
+       ,@size_mb_b = @size_mb_b out; 
+    
+
+    update ##range_ONITVW set
+         row_count_a = @row_count_a
+        ,row_count_b = @row_count_b
+        ,size_mb_a   = @size_mb_a
+        ,size_mb_b   = @size_mb_b
+        ,is_range_closed = 1
+        ,dt_upd      = getutcdate() 
+    where current of crs_RC;
+
+    fetch next from crs_RC into @start, @end;
+
+end;
+ 
+close crs_RC;
+deallocate crs_RC;
+
+select 
+    _start
+   ,_end
+   ,row_count_a as [row_count_$table_a$] 
+   ,row_count_b as [row_count_$table_b$] 
+   ,size_mb_a   as [size_mb_$table_a$]
+   ,size_mb_b   as [size_mb_$table_b$]   
+   ,is_range_closed
+   ,dt_upd
+from ##range_ONITVW;
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

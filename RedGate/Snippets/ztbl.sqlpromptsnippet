@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ztbl</Title>
+      <Shortcut>ztbl</Shortcut>
+      <Description>Dummy Table</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>table_name</ID>
+          <ToolTip />
+          <Default>foo</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[drop table if exists $table_name$;
+create table $table_name$ (
+	i int not null identity primary key,
+	uuid uniqueidentifier,
+	vchar varchar(36),
+	num int,
+	bool bit,
+	dt datetime2
+);
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

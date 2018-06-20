@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>info</Title>
+      <Shortcut>info</Shortcut>
+      <Description>INFORMATION_SCHEMA fragment</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[information_schema.]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

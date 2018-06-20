@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>cte_nums</Title>
+      <Shortcut>cte_nums</Shortcut>
+      <Description>Get a list of numbers</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[;with nums as(
+	select 1 i
+	union all 
+	select i+1
+	from nums
+	where i<1e$SELECTIONSTART$6$SELECTIONEND$
+)
+select i
+from nums
+option (maxrecursion 0);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>wial</Title>
+      <Shortcut>wial</Shortcut>
+      <Description>whoIsActiveLogging by session id</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[select top (100) 
+    event_bst = convert(time(0),(collection_time at time zone 'UTC') at time zone 'GMT Standard Time')
+   ,*
+from DBAdmin.logs.WhoIsActiveLogging 
+where session_id in ($CURSOR$)
+	-- and collection_time < '$DATE$ '
+order by collection_time desc; ]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

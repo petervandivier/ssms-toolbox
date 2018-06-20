@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>coap</Title>
+      <Shortcut>coap</Shortcut>
+      <Description>Create stored procedure</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>procedure_name</ID>
+          <ToolTip />
+          <Default>[schema].[procedure_name]</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[create or alter proc $procedure_name$
+    @parameter_name AS INT
+as
+begin;
+    set nocount on;
+    set xact_abort on;
+    
+    $SELECTEDTEXT$$CURSOR$
+    
+    return;
+end;
+go
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

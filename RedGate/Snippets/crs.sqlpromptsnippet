@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>crs</Title>
+      <Shortcut>crs</Shortcut>
+      <Description>Cursor</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>var1</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>cursor_name</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[declare $var1$ int;
+
+declare $cursor_name$ cursor 
+	local
+	forward_only
+	read_only
+for
+    select $CURSOR$;
+
+open $cursor_name$ 
+
+fetch next from $cursor_name$ into $var1$;
+
+while @@fetch_status = 0
+begin;
+
+    fetch next from $cursor_name$ into $var1$;    
+end;
+
+close $cursor_name$;
+deallocate $cursor_name$
+
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>zdata</Title>
+      <Shortcut>zdata</Shortcut>
+      <Description>Dummmy Data</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[;with getNums as ( select 1 as i union all select i + 1 from getNums where i < 100 )
+    , getData as (
+	select 
+		i,
+		uuid  = newid(),
+		vchar = convert(varchar(36),newid()),
+		num   = abs(checksum(newid())%1000),
+		bool  = convert(bit,abs(checksum(newid())%2)-1),
+		dt    = dateadd(day,checksum(newid())%1000,getutcdate())
+	from getNums
+)
+select *
+from getData gd;]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>mf</Title>
+      <Shortcut>mf</Shortcut>
+      <Description>Master Files</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[$SELECTIONSTART$select [dbid]=mf.database_id
+      ,mf.[type_desc]
+      ,mf.[name]
+      ,mf.physical_name
+      ,mf.state_desc
+      ,size_mb=try_convert(float,(mf.size*8192.)/power(1024,2))
+      ,max_size_mb=try_convert(float,(nullif(mf.max_size,-1)*8192.)/power(1024,2))
+      ,growth_mb=case mf.is_percent_growth when 1 then (mf.growth/100.)*try_convert(float,(mf.size*8192.)/power(1024,2)) else try_convert(float,(mf.growth*8192.)/power(1024,2)) end
+      ,pct=mf.is_percent_growth
+      ,diff_age_time=convert(time(0),dateadd(second,datediff(second,mf.differential_base_time,getutcdate()),0))
+      ,diff_age_days=datediff(day,mf.differential_base_time,getutcdate())
+from sys.master_files mf
+where db_name(mf.database_id) in ('$DBNAME$')$SELECTIONEND$]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

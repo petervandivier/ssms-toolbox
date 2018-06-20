@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>defn</Title>
+      <Shortcut>defn</Shortcut>
+      <Description>Object Definition</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[select object_definition(object_id('$PASTE$$CURSOR$'))]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

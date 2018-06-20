@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>autogrow</Title>
+      <Shortcut>autogrow</Shortcut>
+      <Description>Get autogrowth actions from the default trace</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[declare @path nvarchar(260);
+select @path = reverse(substring(reverse([path])
+                                ,charindex('\',reverse([path]))
+                                ,260)
+                      )+N'log.trc'
+from sys.traces
+where is_default = 1;
+
+select *
+from sys.fn_trace_gettable(@path, default)
+where EventClass in (92, 93)
+    and StartTime > dateadd(hour,-24,getdate());]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

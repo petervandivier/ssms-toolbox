@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>cdb</Title>
+      <Shortcut>cdb</Shortcut>
+      <Description>Create database</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>db_name</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+      </Declarations>
+      <Code Language="sql"><![CDATA[/*$SELECTIONSTART$
+create database $db_name$;
+go
+use $db_name$
+go
+exec sys.sp_changedbowner 'sa';
+go$SELECTIONEND$
+*/
+
+-- drop database $db_name$;
+
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

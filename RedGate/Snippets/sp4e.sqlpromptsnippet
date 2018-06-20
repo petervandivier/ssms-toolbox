@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>sp4e</Title>
+      <Shortcut>sp4e</Shortcut>
+      <Description>For each DB</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[exec sys.sp_MSforeachdb N'use [?]
+$CURSOR$
+';]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

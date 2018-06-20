@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>wia</Title>
+      <Shortcut>wia</Shortcut>
+      <Description>Who Is Active?</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[exec sp_WhoIsActive ]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
