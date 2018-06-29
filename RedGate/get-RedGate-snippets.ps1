@@ -13,3 +13,14 @@ $rgSnipDir = (gc .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
         Copy-Item -LiteralPath $_.FullName -Destination .\Snippets\$_
     }
 }
+
+(".\Snippets.Secret\",".\Snippets\") | % {
+    gci $_ -Filter *.sqlpromptsnippet | % {
+        $exists = Test-Path "$rgSnipDir\$($_.Name)"
+        #"$($_.Name) | $exists"
+        if(-not $exists){
+            "Deleting $($_.Name)"
+            Remove-Item $($_.FullName)
+        }
+    }
+}
