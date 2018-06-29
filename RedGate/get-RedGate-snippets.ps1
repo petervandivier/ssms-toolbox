@@ -22,7 +22,7 @@ Add-Type -AssemblyName Microsoft.VisualBasic
         #"$($_.Name) | $exists"
         if(-not $exists){
             "Deleting $($_.Name)"
-            #Remove-ItemSafely $($_.FullName)
+            #Remove-Item $($_.FullName)
             [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($_.FullName,'OnlyErrorDialogs','SendToRecycleBin')
         }
     }
