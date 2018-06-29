@@ -14,13 +14,16 @@ $rgSnipDir = (gc .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
     }
 }
 
+# https://stackoverflow.com/a/21118566/4709762
+Add-Type -AssemblyName Microsoft.VisualBasic
 (".\Snippets.Secret\",".\Snippets\") | % {
     gci $_ -Filter *.sqlpromptsnippet | % {
         $exists = Test-Path "$rgSnipDir\$($_.Name)"
         #"$($_.Name) | $exists"
         if(-not $exists){
             "Deleting $($_.Name)"
-            Remove-Item $($_.FullName)
+            #Remove-ItemSafely $($_.FullName)
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($_.FullName,'OnlyErrorDialogs','SendToRecycleBin')
         }
     }
 }
