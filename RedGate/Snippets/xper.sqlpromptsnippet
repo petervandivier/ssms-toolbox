@@ -4,7 +4,7 @@
     <Header>
       <Title>xper</Title>
       <Shortcut>xper</Shortcut>
-      <Description>xp_readerrorlog</Description>
+      <Description>xp_readerrorlog with default args</Description>
       <Author />
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>

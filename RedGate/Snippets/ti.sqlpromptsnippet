@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[select * 
+      <Code Language="sql"><![CDATA[-- https://github.com/taddison/tsqlScheduler
+select * 
 from scheduler.Task t 
 where $CURSOR$$PASTE$;]]></Code>
     </Snippet>

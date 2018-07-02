@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>email</Title>
+      <Shortcut>email</Shortcut>
+      <Description>Send a test DB Mail</Description>
+      <Author />
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations />
+      <Code Language="sql"><![CDATA[$SELECTIONSTART$
+declare @usr sysname = '$USER$'
+       ,@domain sysname = '@gmail.com' ;
+declare 
+	@subj nvarchar(255) = 
+	    N'test email from '+@@servername
+	    +' at '+convert(nvarchar(23),getdate(),126),
+    @to sysname = 
+    	right(@usr,len(@usr)-patindex('%\%',@usr))
+    	+@domain;
+
+print @to;
+print @subj;
+
+exec msdb..sp_send_dbmail
+    --@profile_name = null, 
+    @recipients = @to, 
+    @subject = @subj,
+    @body = N'foo';
+$SELECTIONEND$
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -4,7 +4,7 @@
     <Header>
       <Title>xpert</Title>
       <Shortcut>xpert</Shortcut>
-      <Description>xp_readerrorlog to table</Description>
+      <Description>cache xp_readerrorlog to table &amp; selectively exclude log spam</Description>
       <Author />
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>

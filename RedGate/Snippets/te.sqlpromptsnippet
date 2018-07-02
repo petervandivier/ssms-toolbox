@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[declare @dt datetime2(3) = '$DATE$ $TIME$';
+      <Code Language="sql"><![CDATA[-- https://github.com/taddison/tsqlScheduler
+declare @dt datetime2(3) = '$DATE$ $TIME$';
 
 ;with last_run as (
     select id=max(ExecutionID), taskId
@@ -29,7 +30,7 @@ select top (100)
 	,* 
 from scheduler.TaskExecution te
 join last_run lr on lr.taskID = te.TaskID
---where (te.IsError = 1 or te.EndDateTime is null) and 
+--where (te.IsError = 1 or te.EndDateTime is null)  
 	-- and te.StartDateTime between dateadd(hour,-2,@dt) and dateadd(hour,2,@dt)
 order by te.StartDateTime desc;	]]></Code>
     </Snippet>

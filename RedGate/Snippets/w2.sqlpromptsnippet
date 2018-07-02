@@ -4,7 +4,7 @@
     <Header>
       <Title>w2</Title>
       <Shortcut>w2</Shortcut>
-      <Description>Execute sp_who2</Description>
+      <Description>Cache sp_who2 and transform [LastBatch] to DateTime datatype</Description>
       <Author />
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>

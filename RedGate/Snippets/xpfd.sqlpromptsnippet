@@ -4,7 +4,7 @@
     <Header>
       <Title>xpfd</Title>
       <Shortcut>xpfd</Shortcut>
-      <Description>Retrieve free space on all fixed drives</Description>
+      <Description>Free space on fixed drives</Description>
       <Author />
       <SnippetTypes>
         <SnippetType>Expansion</SnippetType>
