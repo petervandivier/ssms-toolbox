@@ -17,8 +17,8 @@ drop table if exists #sqlperf_logspace;
 create table #sqlperf_logspace (
     id         int not null identity primary key,
     db sysname unique,
-    size_mb    decimal(10,2),
-    pct_full   decimal(10,2),
+    size_mb    decimal(10,4),
+    pct_full   decimal(10,4),
     _status    tinyint check (_status=0)
 );
 
