@@ -24,8 +24,8 @@
         </Literal>
       </Declarations>
       <Code Language="sql"><![CDATA[
-drop table if exists ##batch_bounds_ONITVW; -- <-- careful with ##globals
-create table ##batch_bounds_ONITVW (
+drop table if exists ##batch_bounds_$MACHINE$; -- <-- careful with ##globals
+create table ##batch_bounds_$MACHINE$ (
      start_dt datetime2(3) not null primary key
     ,end_dt   datetime2(3) not null unique
     ,check (end_dt > start_dt) 
@@ -52,12 +52,12 @@ with date_range as (
     from plus_some ps
     cross join _hours h
 )
-insert ##batch_bounds_ONITVW (start_dt, end_dt)
+insert ##batch_bounds_$MACHINE$ (start_dt, end_dt)
 select _start, convert(datetime2(3),dateadd(hour,$hours$,_start))
 from hour_rng
 option (maxrecursion 0);
 
-select * from ##batch_bounds_ONITVW;]]></Code>
+select * from ##batch_bounds_$MACHINE$;]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

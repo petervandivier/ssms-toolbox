@@ -123,8 +123,8 @@ set nocount on;
 --set lock_timeout 1000;
 --set xact_abort on;
 
-drop table if exists ##range_ONITVW;
-create table ##range_ONITVW (
+drop table if exists ##range_$MACHINE$;
+create table ##range_$MACHINE$ (
      _start          datetime2(3) not null primary key
     ,_end            datetime2(3) not null unique
     ,check (_start < _end)
@@ -136,9 +136,9 @@ create table ##range_ONITVW (
     ,dt_upd          datetime2(3)
 );
 
-insert ##range_ONITVW(_start, _end)
-exec ('select start_dt, end_dt from ##batch_bounds_ONITVW;');
--- select * from ##range_ONITVW
+insert ##range_$MACHINE$(_start, _end)
+exec ('select start_dt, end_dt from ##batch_bounds_$MACHINE$;');
+-- select * from ##range_$MACHINE$
 
 declare 
      @start        datetime2(3)
@@ -168,7 +168,7 @@ select
 
 declare crs_RC cursor for
     select _start,_end 
-    from ##range_ONITVW 
+    from ##range_$MACHINE$ 
     where is_range_closed=0;
 
 open crs_RC;
@@ -190,7 +190,7 @@ begin;
        ,@size_mb_b = @size_mb_b out; 
     
 
-    update ##range_ONITVW set
+    update ##range_$MACHINE$ set
          row_count_a = @row_count_a
         ,row_count_b = @row_count_b
         ,size_mb_a   = @size_mb_a
@@ -215,7 +215,7 @@ select
    ,size_mb_b   as [size_mb_$table_b$]   
    ,is_range_closed
    ,dt_upd
-from ##range_ONITVW;
+from ##range_$MACHINE$;
 ]]></Code>
     </Snippet>
   </CodeSnippet>

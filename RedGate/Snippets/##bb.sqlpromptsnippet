@@ -19,8 +19,8 @@
         </Literal>
       </Declarations>
       <Code Language="sql"><![CDATA[
-drop table if exists ##batch_bounds_ONITVW; -- <-- careful with ##globals
-create table ##batch_bounds_ONITVW (
+drop table if exists ##batch_bounds_$MACHINE$; -- <-- careful with ##globals
+create table ##batch_bounds_$MACHINE$ (
      start_dt datetime2(3) not null primary key
     ,end_dt   datetime2(3) not null unique
     ,check (end_dt > start_dt) 
@@ -39,12 +39,12 @@ with date_range as (
     --union all select '1753-01-01','2013-01-01'
     --union all select '2020-12-01','9999-01-01'
 )
-insert ##batch_bounds_ONITVW (start_dt, end_dt)
+insert ##batch_bounds_$MACHINE$ (start_dt, end_dt)
 select _start, _end
 from plus_some
 option (maxrecursion 0);
 
-select * from ##batch_bounds_ONITVW;]]></Code>
+select * from ##batch_bounds_$MACHINE$;]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>
