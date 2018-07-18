@@ -18,12 +18,27 @@
           <Default />
         </Literal>
         <Literal>
-          <ID>column_a</ID>
+          <ID>table_b</ID>
           <ToolTip />
           <Default />
         </Literal>
         <Literal>
-          <ID>table_b</ID>
+          <ID>partition_data_type</ID>
+          <ToolTip />
+          <Default>datetime2</Default>
+        </Literal>
+        <Literal>
+          <ID>precision_scale</ID>
+          <ToolTip />
+          <Default />
+        </Literal>
+        <Literal>
+          <ID>method</ID>
+          <ToolTip />
+          <Default>-- </Default>
+        </Literal>
+        <Literal>
+          <ID>column_a</ID>
           <ToolTip />
           <Default />
         </Literal>
@@ -32,54 +47,18 @@
           <ToolTip />
           <Default />
         </Literal>
-        <Literal>
-          <ID>partition_data_type</ID>
-          <ToolTip />
-          <Default>datetime2(3)</Default>
-        </Literal>
-        <Literal>
-          <ID>method</ID>
-          <ToolTip />
-          <Default>-- </Default>
-        </Literal>
       </Declarations>
       <Code Language="sql"><![CDATA[
 create or alter proc #getRowCountForRange
      @start     datetime2(3)
     ,@end       datetime2(3)
-    ,@method    varchar(11) = 'COUNT_STAR' -- 'PARTITIONS','DMV'
+    ,@method    varchar(11) = 'PARTITIONS' -- 'COUNT_STAR'
     ,@rc_a      bigint      output
     ,@rc_b      bigint      output
     ,@size_mb_a float       output
     ,@size_mb_b float       output
 as 
 begin;
-
-    if @method = 'COUNT_STAR'
-    begin
-        select @rc_a = count_big(*) 
-        from $table_a$
-        where $column_a$ >= @start 
-            and $column_a$  < @end;
-
-        select @rc_b = count_big(*) 
-        from $table_b$ 
-        where $column_b$ >= @start 
-            and $column_b$ < @end;
-    end
-
-    if @method = 'DMV' -- TODO: make this useful
-    begin;
-        select @rc_a      = sum(iif(index_id in (0,1),row_count,0))
-              ,@size_mb_a = sum(used_page_count*8192.)/power(1024.,2)
-        from sys.dm_db_partition_stats
-        where [object_id] = object_id('$table_a$');
-
-        select @rc_b      = sum(iif(index_id in (0,1),row_count,0))
-              ,@size_mb_b = sum(used_page_count*8192.)/power(1024.,2)
-        from sys.dm_db_partition_stats
-        where [object_id] = object_id('$table_b$');
-    end;
     
     if @method = 'PARTITIONS'
     begin;
@@ -98,7 +77,8 @@ begin;
 		    on prv.boundary_id = s.partition_number
 		    and prv.function_id = pf.function_id
 		where s.[object_id] = object_id('$table_a$')
-			and try_cast(prv.[value] as $partition_data_type$) = @start;
+		    and sql_variant_property(prv.[value],'BaseType') = '$partition_data_type$'
+			and try_cast(prv.[value] as $partition_data_type$$precision_scale$) = @start;
 
 		select 
 		     @rc_b = sum(iif(s.index_id in (0,1),s.row_count,0))
@@ -114,8 +94,22 @@ begin;
 		    on prv.boundary_id = s.partition_number
 		    and prv.function_id = pf.function_id
 		where s.[object_id] = object_id('$table_b$')
-			and try_cast(prv.[value] as $partition_data_type$) = @start;
+		    and sql_variant_property(prv.[value],'BaseType') = '$partition_data_type$'
+			and try_cast(prv.[value] as $partition_data_type$$precision_scale$) = @start;
     end;
+    
+    if @method = 'COUNT_STAR'
+    begin
+        select @rc_a = count_big(*) 
+        from $table_a$
+        where $column_a$ >= @start 
+            and $column_a$  < @end;
+
+        select @rc_b = count_big(*) 
+        from $table_b$ 
+        where $column_b$ >= @start 
+            and $column_b$ < @end;
+    end
 end;
 go
 
@@ -146,7 +140,10 @@ declare
     ,@row_count_a  bigint
     ,@row_count_b  bigint
     ,@size_mb_a    float
-    ,@size_mb_b    float;
+    ,@size_mb_b    float
+    ,@loop_num_cur int = 0
+    ,@loop_num_all int
+    ,@msg          nvarchar(4000);
 
 /*
 exec dbo.#getRowCountForRange 
@@ -165,57 +162,65 @@ select
     ,size_mb_b   = @size_mb_b
     ,is_range_closed = 1
 */
+begin 
+	select @loop_num_all = count(*) from ##range_VGD18559;
 
-declare crs_RC cursor for
-    select _start,_end 
-    from ##range_$MACHINE$ 
-    where is_range_closed=0;
-
-open crs_RC;
-
-fetch next from crs_RC into @start, @end
-
-while @@fetch_status = 0
-begin;
-    declare @rc_a bigint
-       ,@rc_b     bigint;
-    
-    exec dbo.#getRowCountForRange
-		$method$@method = 'PARTITIONS',
-        @start = @start
-       ,@end   = @end
-       ,@rc_a  = @row_count_a out
-       ,@rc_b  = @row_count_b out
-       ,@size_mb_a = @size_mb_a out
-       ,@size_mb_b = @size_mb_b out; 
-    
-
-    update ##range_$MACHINE$ set
-         row_count_a = @row_count_a
-        ,row_count_b = @row_count_b
-        ,size_mb_a   = @size_mb_a
-        ,size_mb_b   = @size_mb_b
-        ,is_range_closed = 1
-        ,dt_upd      = getutcdate() 
-    where current of crs_RC;
-
-    fetch next from crs_RC into @start, @end;
-
+	declare crs_RC cursor for
+	    select _start,_end 
+	    from ##range_$MACHINE$ 
+	    where is_range_closed=0;
+	
+	open crs_RC;
+	
+	fetch next from crs_RC into @start, @end
+	
+	while @@fetch_status = 0
+	begin;
+		select @loop_num_cur += 1;
+	    set @msg = convert(varchar,getutcdate(),126)+': '+formatmessage('Interating loop [%i] of [%i].',@loop_num_cur,@loop_num_all);
+	    raiserror(@msg,0,0) with nowait;
+	    
+	    declare @rc_a bigint
+	       ,@rc_b     bigint;
+	    
+	    exec dbo.#getRowCountForRange
+			$method$@method = 'PARTITIONS',
+	        @start = @start
+	       ,@end   = @end
+	       ,@rc_a  = @row_count_a out
+	       ,@rc_b  = @row_count_b out
+	       ,@size_mb_a = @size_mb_a out
+	       ,@size_mb_b = @size_mb_b out; 
+	    
+	
+	    update ##range_$MACHINE$ set
+	         row_count_a = @row_count_a
+	        ,row_count_b = @row_count_b
+	        ,size_mb_a   = @size_mb_a
+	        ,size_mb_b   = @size_mb_b
+	        ,is_range_closed = 1
+	        ,dt_upd      = getutcdate() 
+	    where current of crs_RC;
+	
+	    fetch next from crs_RC into @start, @end;
+	
+	end;
+	 
+	close crs_RC;
+	deallocate crs_RC;
 end;
- 
-close crs_RC;
-deallocate crs_RC;
 
 select 
     _start
    ,_end
-   ,row_count_a as [row_count_$table_a$] 
-   ,row_count_b as [row_count_$table_b$] 
-   ,size_mb_a   as [size_mb_$table_a$]
-   ,size_mb_b   as [size_mb_$table_b$]   
+   ,row_count_a as [row_count_PageEvent.PageEvent] 
+   ,row_count_b as [row_count_PageEvent.PageEvent_new] 
+   ,size_mb_a   as [size_mb_PageEvent.PageEvent]
+   ,size_mb_b   as [size_mb_PageEvent.PageEvent_new]   
    ,is_range_closed
    ,dt_upd
-from ##range_$MACHINE$;
+from ##range_VGD18559;
+
 ]]></Code>
     </Snippet>
   </CodeSnippet>
