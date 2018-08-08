@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[$SELECTIONSTART$drop table if exists #fullness;
+      <Code Language="sql"><![CDATA[$SELECTIONSTART$
+drop table if exists #fullness;
 create table #fullness (
      database_id int not null
     ,fname sysname 
@@ -45,7 +46,8 @@ from sys.master_files mf
 join #fullness f 
     on f.database_id = mf.database_id 
     and f.fname = mf.[name]
-where db_name(mf.database_id) in ('$DBNAME$')$SELECTIONEND$]]></Code>
+where db_name(mf.database_id) in ('$DBNAME$')
+$SELECTIONEND$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

@@ -42,7 +42,8 @@ where t.[name] not like 'dt%'
     and t.is_ms_shipped = 0
     and i.[object_id] > 255
 group by t.[object_id]
-order by TotalSpaceMB desc;]]></Code>
+order by TotalSpaceMB desc;
+]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

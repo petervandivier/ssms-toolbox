@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[drop table if exists #spwho2;
+      <Code Language="sql"><![CDATA[
+drop table if exists #spwho2;
 
 create table #spwho2 (
     SPID        int not null,
