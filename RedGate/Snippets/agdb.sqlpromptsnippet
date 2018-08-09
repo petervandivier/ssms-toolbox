@@ -12,10 +12,11 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[declare 
-	@dbName sysname = '$CURSOR$',
-	@agid uniqueidentifier,
-	@agName sysname;
+      <Code Language="sql"><![CDATA[
+declare 
+    @dbName sysname = '$CURSOR$',
+    @agid uniqueidentifier,
+    @agName sysname;
 
 select @agid = adc.group_id
 from sys.availability_databases_cluster adc
@@ -39,7 +40,8 @@ select ar.replica_server_name,
        ar.modify_date,
        [seeding_mode] = ar.seeding_mode_desc 
 from sys.availability_replicas ar
-where ar.group_id = @agid;]]></Code>
+where ar.group_id = @agid;
+]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

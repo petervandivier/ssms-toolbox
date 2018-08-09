@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[drop table if exists #xper;
+      <Code Language="sql"><![CDATA[
+drop table if exists #xper;
 create table #xper (id int identity primary key, LogNo tinyint, LogDate datetime, ProcessInfo nvarchar(12), [Text] nvarchar(3999));
 
 declare @i tinyint = 0

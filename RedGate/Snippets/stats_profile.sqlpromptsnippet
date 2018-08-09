@@ -12,7 +12,7 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[-- set statistics profile on; <-- in remote session
+      <Code Language="sql"><![CDATA[-- set statistics profile on; <-- in remote session, as needed
 
 select      p.node_id
            ,p.physical_operator_name
@@ -22,7 +22,8 @@ select      p.node_id
 from        sys.dm_exec_query_profiles p
 where       p.session_id = $CURSOR$
 group by    p.node_id ,p.physical_operator_name
-order by    p.node_id;]]></Code>
+order by    p.node_id;
+]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>

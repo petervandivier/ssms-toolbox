@@ -28,7 +28,8 @@ exec (N'dbcc sqlperf(logspace) with no_infomsgs;');
 select sl.*, d.log_reuse_wait_desc, d.recovery_model_desc 
 from #sqlperf_logspace sl
 left join sys.databases d on d.[name] = sl.db
-order by pct_full desc;]]></Code>
+order by pct_full desc;
+]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>
