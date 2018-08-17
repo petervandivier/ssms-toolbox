@@ -12,7 +12,8 @@
     </Header>
     <Snippet>
       <Declarations />
-      <Code Language="sql"><![CDATA[$SELECTIONSTART$drop table if exists #xpfd;
+      <Code Language="sql"><![CDATA[$SELECTIONSTART$
+drop table if exists #xpfd;
 create table #xpfd (
     drive char(1) not null primary key,
     mb_free int not null,
@@ -21,7 +22,8 @@ create table #xpfd (
 insert #xpfd ( drive, mb_free )
 exec xp_fixeddrives;
 
-select * from #xpfd x;$SELECTIONEND$]]></Code>
+select * from #xpfd x;
+$SELECTIONEND$]]></Code>
     </Snippet>
   </CodeSnippet>
 </CodeSnippets>
