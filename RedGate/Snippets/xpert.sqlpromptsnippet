@@ -32,7 +32,7 @@ exec MASTER.dbo.xp_regread
     @TimeZone out;
 
 select 
-	bst = getdate() at time zone @TimeZone at time zone 'GMT Standard Time',
+	bst = LogDate at time zone @TimeZone at time zone 'GMT Standard Time',
 	* ,','''+replace(left([Text],21),'''','''''')+''''
 from #xper
 where LogDate >= '$DATE$' and 
@@ -41,9 +41,11 @@ where LogDate >= '$DATE$' and
         ,'DBCC TRACEOFF 3604, s' -- SQLPrompt
         ,'DBCC TRACEON 3604, se' -- SQLPrompt
         ,'The activated proc ''[' -- moar SB spam
+	,'SQL Trace stopped. Tr'
         )
 -- select top(1) [text] from sys.messages where language_id = 1033 and message_id = 33308
     and [Text] not like 'The queue % in database % has activation enabled and contains unlocked messages but no RECEIVE has been executed for % seconds.' -- SB spam
+    and [Text] not like 'SQL Trace ID % was st%'
 order by LogDate desc, id desc;
 
 ]]></Code>
