@@ -22,10 +22,21 @@ exec xp_readerrorlog @i;
 update #xper set LogNo = @i where LogNo is null; 
 
 -- select top(10) ','''+replace(left([Text],21),'''','''''')+'''' , count(*) from #xper group by left([Text],21) order by 2 desc
+-- https://blog.sqlauthority.com/2014/02/15/sql-server-get-current-timezone-name-in-sql-server/
+-- select * from sys.time_zone_info
+declare @TimeZone varchar(50);
+exec MASTER.dbo.xp_regread
+    'HKEY_LOCAL_MACHINE',
+    'SYSTEM\CurrentControlSet\Control\TimeZoneInformation',
+    'TimeZoneKeyName',
+    @TimeZone out;
 
-select * ,','''+replace(left([Text],21),'''','''''')+''''
+select 
+	bst = getdate() at time zone @TimeZone at time zone 'GMT Standard Time',
+	* ,','''+replace(left([Text],21),'''','''''')+''''
 from #xper
-where left([Text],21) not in (
+where LogDate >= '$DATE$' and 
+    left([Text],21) not in (
          '[INFO] Database ID: [' -- SB spam
         ,'DBCC TRACEOFF 3604, s' -- SQLPrompt
         ,'DBCC TRACEON 3604, se' -- SQLPrompt
