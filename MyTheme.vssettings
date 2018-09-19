@@ -11,6 +11,8 @@
 			</ToolsOptionsSubCategory>
 			<ToolsOptionsSubCategory name="SQL" RegisteredName="SQL" PackageName="Text Management Package">
 				<PropertyValue name="ShowLineNumbers">true</PropertyValue>
+<!-- Show Whitespace not a shell setting? --> 
+<!-- https://stackoverflow.com/a/38459686/4709762 --> 
 				<PropertyValue name="InsertTabs">false</PropertyValue>
 			</ToolsOptionsSubCategory>
 		</ToolsOptionsCategory>
