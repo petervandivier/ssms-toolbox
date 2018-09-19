@@ -1,4 +1,4 @@
-<!-- credit to Aaron Bertrand
+<!-- credit to Aaron Bertrand for initial Dark Theme
      https://blogs.sentryone.com/aaronbertrand/making-ssms-pretty-my-dark-theme/
 -->
 <UserSettings>
@@ -11,6 +11,7 @@
 			</ToolsOptionsSubCategory>
 			<ToolsOptionsSubCategory name="SQL" RegisteredName="SQL" PackageName="Text Management Package">
 				<PropertyValue name="ShowLineNumbers">true</PropertyValue>
+				<PropertyValue name="InsertTabs">false</PropertyValue>
 			</ToolsOptionsSubCategory>
 		</ToolsOptionsCategory>
 	</ToolsOptions>
