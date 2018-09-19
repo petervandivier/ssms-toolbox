@@ -375,7 +375,7 @@ sql = "</Prefix>
     <GeneralSpaceCountInTab>4</GeneralSpaceCountInTab>
     <GeneralReplaceTabsWithSpaces>false</GeneralReplaceTabsWithSpaces>
     <SmartIndent>false</SmartIndent>
-    <GeneralIndentType>Tabs</GeneralIndentType>
+    <GeneralIndentType>Spaces</GeneralIndentType>
     <GeneralAddSpacesAroundAssignmentOperators>true</GeneralAddSpacesAroundAssignmentOperators>
     <ExpressionsAddSpacesAroundArithmeticOperators>true</ExpressionsAddSpacesAroundArithmeticOperators>
     <ExpressionsAddSpacesAroundComparisonOperators>true</ExpressionsAddSpacesAroundComparisonOperators>
