@@ -394,7 +394,7 @@ sql = "</Prefix>
     <GeneralKeepEmptyLineBeforeStatement>false</GeneralKeepEmptyLineBeforeStatement>
     <GeneralInsertEmptyLineBeforeEachStatement>false</GeneralInsertEmptyLineBeforeEachStatement>
     <GeneralKeepEmptyLinesBeforeAfterScript>true</GeneralKeepEmptyLinesBeforeAfterScript>
-    <SqlTypesFormatting>false</SqlTypesFormatting>
+    <SqlTypesFormatting>true</SqlTypesFormatting>
     <SqlTypeAlign>Left</SqlTypeAlign>
     <SqlTypesIndenSize>1</SqlTypesIndenSize>
     <IsUseCommentsOptions>false</IsUseCommentsOptions>
