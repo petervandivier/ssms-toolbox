@@ -41,8 +41,10 @@ exec sys.sp_who2;
 update #spwho2 set LastBatch = replace( replace( convert(char(4), year(getutcdate())) + '/' + LastBatch, ' ', 'T'), '/', '-');
 alter table #spwho2 alter column LastBatch datetime;
 
-select *
+select *, t.[text]
 from   #spwho2 s
+join dbo.sysprocesses p on p.spid = s.SPID
+outer apply sys.dm_exec_sql_text(p.[sql_handle]) t
 where s.SPID > 50
 --    and s.[Login] = '$USER$'
 --    and s.HostName = '$MACHINE$'
