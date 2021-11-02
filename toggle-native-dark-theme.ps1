@@ -6,12 +6,15 @@
     [switch]$disable
 )
 
-$file    = "C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\ssms.pkgundef"
+$SsmsInventory = Get-ChildItem -Recurse -ErrorAction SilentlyContinue -Path C:\ -Filter ssms.exe
 $disable_line = "[`$RootKey`$\Themes\{1ded0138-47ce-435e-84ef-9ec1f439b749}]"
 $enable_line  = "// [`$RootKey`$\Themes\{1ded0138-47ce-435e-84ef-9ec1f439b749}]"
 
-
-if(Test-Path $file){
+foreach($install in $SsmsInventory){
+    Write-Verbose "Updating install at $($install.DirectoryName)" -Verbose
+    
+    $file = Join-Path $install.DirectoryName "ssms.pkgundef"
+    
     # take a backup first
     Copy-Item $file "~/Desktop/ssms_$(Get-Date -Format "yyyy-MM-ddThh.mm.ss").pkgundef" 
     
@@ -21,6 +24,4 @@ if(Test-Path $file){
     } else {
         (Get-Content $file -Raw) -replace [Regex]::Escape($disable_line), $enable_line | Out-File $file
     }
-} else {
-    Write-Error "Config file not found at '$file'"
 }
