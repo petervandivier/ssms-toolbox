@@ -1,3 +1,7 @@
 {
-    "Snippet Folder":"~/AppData/Local/Red Gate/SQL Prompt 10/Snippets"
+    "SnippetFolder":"~/AppData/Local/Red Gate/SQL Prompt 10/Snippets",
+    "HiddenSnippets": {
+        "FilterSlug": "sh",
+        "StashFolder": "${env:OneDrive}/utilities/SqlPromptSnippets"
+    }
 }

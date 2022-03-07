@@ -1,30 +1,30 @@
 ﻿#Requires -RunAsAdministrator
 
 Push-Location $PSScriptRoot
-$rgSnipDir = (Get-Content .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
 
-if(-not (Test-Path ".\Snippets.Secret\")){New-Item -ItemType Directory -Path ".\Snippets.Secret\"}
+$config = Get-Content .\RedGate.config.json | ConvertFrom-Json
+$PublicSnippetFolder = Invoke-Expression "Resolve-Path `"$($config.SnippetFolder)`""
+$PrivateSnippetRepo = Invoke-Expression "Resolve-Path `"$($config.HiddenSnippets.StashFolder)`""
+$PrivateSnippetSlug = $config.HiddenSnippets.FilterSlug
 
-(Get-ChildItem -LiteralPath $rgSnipDir) | ForEach-Object {
-    $snip = Get-Content -LiteralPath "$($_.FullName)"
-    $xml = [xml]$snip
+Get-ChildItem -LiteralPath $PublicSnippetFolder -File | ForEach-Object {
+    $snip = Get-Content -LiteralPath "$($_.FullName)" | ConvertFrom-Json
     Write-Verbose $_
-    if($xml.CodeSnippets.CodeSnippet.Header.Description.EndsWith("SECRET")){
-        Copy-Item -LiteralPath $_.FullName -Destination .\Snippets.Secret\$_
+    if($snip.description.EndsWith($PrivateSnippetSlug)){
+        Copy-Item -LiteralPath "$($_.FullName)"  -Destination "$PrivateSnippetRepo/$($_.Name)"
     }else{
-        Copy-Item -LiteralPath $_.FullName -Destination .\Snippets\$_
+        Copy-Item -LiteralPath "$($_.FullName)"  -Destination "./10/Snippets/$($_.Name)"
     }
 }
 
 # https://stackoverflow.com/a/21118566/4709762
 Add-Type -AssemblyName Microsoft.VisualBasic
-(".\Snippets.Secret\",".\Snippets\") | ForEach-Object {
-    Get-ChildItem $_ -Filter *.sqlpromptsnippet | ForEach-Object {
-        $exists = Test-Path "$rgSnipDir\$($_.Name)"
-        #"$($_.Name) | $exists"
+
+($PrivateSnippetRepo,"./10/Snippets/") | ForEach-Object {
+    Get-ChildItem -LiteralPath "$_" -Filter *.json | ForEach-Object {
+        $exists = Test-Path "$PublicSnippetFolder\$($_.Name)"
         if(-not $exists){
             Write-Warning "Deleting $($_.Name)"
-            #Remove-Item $($_.FullName)
             [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($_.FullName,'OnlyErrorDialogs','SendToRecycleBin')
         }
     }
