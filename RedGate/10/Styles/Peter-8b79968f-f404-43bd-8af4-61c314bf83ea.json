@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "id": "8b79968f-f404-43bd-8af4-61c314bf83ea",
+    "name": "Peter"
+  },
+  "whitespace": {
+    "wrapLinesLongerThan": 78,
+    "newLines": {
+      "preserveExistingEmptyLinesBetweenStatements": false,
+      "preserveExistingEmptyLinesAfterBatchSeparator": false
+    }
+  },
+  "lists": {
+    "placeFirstItemOnNewLine": "ifSubsequentItems",
+    "alignItemsAcrossClauses": false,
+    "alignComments": true,
+    "addSpaceAfterComma": false
+  },
+  "parentheses": {
+    "parenthesisStyle": "expandedSplit",
+    "indentParenthesesContents": true,
+    "collapseParenthesesShorterThan": 78
+  },
+  "casing": {
+    "reservedKeywords": "lowercase",
+    "builtInFunctions": "lowercase",
+    "builtInDataTypes": "lowercase",
+    "globalVariables": "lowercase",
+    "useObjectDefinitionCase": true
+  },
+  "dml": {
+    "collapseStatementsShorterThan": 75,
+    "collapseShortSubqueries": true,
+    "collapseSubqueriesShorterThan": 75
+  },
+  "ddl": {
+    "parenthesisStyle": "expandedSplit",
+    "indentParenthesesContents": true,
+    "alignDataTypesAndConstraints": true,
+    "placeConstraintsOnNewLines": true,
+    "placeConstraintColumnsOnNewLines": "ifLongerOrMultipleColumns",
+    "indentClauses": true,
+    "collapseShortStatements": true,
+    "collapseStatementsShorterThan": 75
+  },
+  "controlFlow": {
+    "collapseStatementsShorterThan": 78
+  },
+  "cte": {
+    "parenthesisStyle": "expandedSplit",
+    "indentContents": true
+  },
+  "variables": {
+    "placeEqualsSignOnNewLine": true
+  },
+  "joinStatements": {
+    "join": {
+      "indentJoinTable": false
+    },
+    "on": {
+      "placeOnNewLine": false,
+      "conditionAlignment": "toTable"
+    }
+  },
+  "insertStatements": {
+    "columns": {
+      "parenthesisStyle": "expandedSplit"
+    },
+    "values": {
+      "parenthesisStyle": "expandedSplit",
+      "indentContents": true
+    }
+  },
+  "caseExpressions": {
+    "placeExpressionOnNewLine": false,
+    "placeFirstWhenOnNewLine": "never",
+    "whenAlignment": "toFirstItem",
+    "placeElseOnNewLine": false,
+    "placeEndOnNewLine": false,
+    "collapseCaseExpressionsShorterThan": 75
+  },
+  "operators": {
+    "andOr": {
+      "alignment": "rightAligned"
+    },
+    "between": {
+      "placeOnNewLine": false
+    },
+    "in": {
+      "placeFirstValueOnNewLine": "never",
+      "placeSubsequentValuesOnNewLines": "never",
+      "addSpaceAroundInContents": true
+    }
+  }
+}
