@@ -13,6 +13,8 @@ Get-ChildItem -LiteralPath $PublicSnippetFolder -File | ForEach-Object {
         Copy-Item -LiteralPath "$($_.FullName)"  -Destination "$PrivateSnippetRepo/$($_.Name)"
     }else{
         Copy-Item -LiteralPath "$($_.FullName)"  -Destination "./10/Snippets/$($_.Name)"
+        Set-Content ../Snippets/$($snip.prefix).sql "/*$([Environment]::NewLine)$($snip.description)$([Environment]::NewLine)*/$([Environment]::NewLine)"
+        Add-Content ../Snippets/$($snip.prefix).sql $snip.body 
     }
 }
 
