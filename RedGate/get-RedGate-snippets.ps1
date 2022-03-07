@@ -1,5 +1,4 @@
-﻿#Requires -RunAsAdministrator
-
+﻿
 Push-Location $PSScriptRoot
 
 $config = Get-Content .\RedGate.config.json | ConvertFrom-Json
