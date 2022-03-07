@@ -1,12 +1,12 @@
 ﻿#Requires -RunAsAdministrator
 
-cd ~/git/toolbox/Redgate
-$rgSnipDir = (gc .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
+Set-Location ~/git/toolbox/Redgate
+$rgSnipDir = (Get-Content .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
 
 if(-not (Test-Path ".\Snippets.Secret\")){New-Item -ItemType Directory -Path ".\Snippets.Secret\"}
 
-(gci -LiteralPath $rgSnipDir) | % {
-    $snip = gc -LiteralPath "$($_.FullName)"
+(Get-ChildItem -LiteralPath $rgSnipDir) | ForEach-Object {
+    $snip = Get-Content -LiteralPath "$($_.FullName)"
     $xml = [xml]$snip
     Write-Verbose $_
     if($xml.CodeSnippets.CodeSnippet.Header.Description.EndsWith("SECRET")){
@@ -18,8 +18,8 @@ if(-not (Test-Path ".\Snippets.Secret\")){New-Item -ItemType Directory -Path ".\
 
 # https://stackoverflow.com/a/21118566/4709762
 Add-Type -AssemblyName Microsoft.VisualBasic
-(".\Snippets.Secret\",".\Snippets\") | % {
-    gci $_ -Filter *.sqlpromptsnippet | % {
+(".\Snippets.Secret\",".\Snippets\") | ForEach-Object {
+    Get-ChildItem $_ -Filter *.sqlpromptsnippet | ForEach-Object {
         $exists = Test-Path "$rgSnipDir\$($_.Name)"
         #"$($_.Name) | $exists"
         if(-not $exists){
