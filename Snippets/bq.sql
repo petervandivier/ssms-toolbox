@@ -1,0 +1,8 @@
+/*
+block quote
+*/
+
+/*
+$SELECTEDTEXT$
+*/
+$CURSOR$

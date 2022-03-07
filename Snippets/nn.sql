@@ -1,0 +1,5 @@
+/*
+NOT NULL
+*/
+
+not null

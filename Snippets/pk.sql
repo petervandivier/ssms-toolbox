@@ -1,0 +1,5 @@
+/*
+pk
+*/
+
+primary key ($CURSOR$)
