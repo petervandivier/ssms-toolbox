@@ -1,6 +1,6 @@
 ﻿#Requires -RunAsAdministrator
 
-Set-Location ~/git/toolbox/Redgate
+Push-Location $PSScriptRoot
 $rgSnipDir = (Get-Content .\RedGate.config.json | ConvertFrom-Json)."Snippet Folder"
 
 if(-not (Test-Path ".\Snippets.Secret\")){New-Item -ItemType Directory -Path ".\Snippets.Secret\"}
@@ -29,3 +29,5 @@ Add-Type -AssemblyName Microsoft.VisualBasic
         }
     }
 }
+
+Pop-Location
