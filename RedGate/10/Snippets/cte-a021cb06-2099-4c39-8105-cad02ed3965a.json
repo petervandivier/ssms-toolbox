@@ -1,0 +1,12 @@
+{
+  "id": "a021cb06-2099-4c39-8105-cad02ed3965a",
+  "prefix": "cte",
+  "description": "Encapsulate selected text as cte fragment",
+  "body": ";with $cte_name$ as (\n$SELECTEDTEXT$\n)\nselect $CURSOR$\nfrom $cte_name$",
+  "placeholders": [
+    {
+      "name": "cte_name",
+      "defaultValue": ""
+    }
+  ]
+}

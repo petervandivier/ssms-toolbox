@@ -1,0 +1,6 @@
+{
+  "id": "82ad27b6-73b4-4591-b888-c99ab3cb93aa",
+  "prefix": "qs",
+  "description": "Query Store Execution Counts by Obj Name",
+  "body": "select top (100) \n    obj=object_schema_name([object_id])+'.'+object_name([object_id])\n   ,s.runtime_stats_id\n   ,s.plan_id\n   ,s.first_execution_time\n   ,s.last_execution_time\n   ,s.count_executions\n   ,p.query_id\n   ,p.plan_group_id\nfrom sys.query_store_runtime_stats s\njoin sys.query_store_plan p on p.plan_id = s.plan_id\njoin sys.query_store_query q on q.query_id = p.query_id\nwhere q.[object_id] in ( \n     object_id('$CURSOR$')--,object_id('')\n);"
+}

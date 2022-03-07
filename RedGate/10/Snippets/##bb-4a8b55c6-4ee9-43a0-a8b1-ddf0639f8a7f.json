@@ -1,0 +1,12 @@
+{
+  "id": "4a8b55c6-4ee9-43a0-a8b1-ddf0639f8a7f",
+  "prefix": "##bb",
+  "description": "Unique range of date simple bounds in a ##Global_Temp_Table",
+  "body": "\ndrop table if exists ##batch_bounds_$MACHINE$; -- <-- careful with ##globals\ncreate table ##batch_bounds_$MACHINE$ (\n     start_dt datetime2(3) not null primary key\n    ,end_dt   datetime2(3) not null unique\n    ,check (end_dt > start_dt) \n);\n\nwith date_range as (\n    select cast('$start$' as datetime2) as dt\n    union all \n    select dateadd(month,1,dt)\n    from date_range\n    where dt<'$DATE$'\n), plus_some as ( -- manual additions to range\n    select _start = dt \n          ,_end = convert(datetime2(3),dateadd(month,1,dt))\n    from date_range\n    --union all select '1753-01-01','2013-01-01'\n    --union all select '2020-12-01','9999-01-01'\n)\ninsert ##batch_bounds_$MACHINE$ (start_dt, end_dt)\nselect _start, _end\nfrom plus_some\noption (maxrecursion 0);\n\nselect * from ##batch_bounds_$MACHINE$;",
+  "placeholders": [
+    {
+      "name": "start",
+      "defaultValue": "2015-01-01"
+    }
+  ]
+}

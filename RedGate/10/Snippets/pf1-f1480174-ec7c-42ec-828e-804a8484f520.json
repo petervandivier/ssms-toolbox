@@ -1,0 +1,6 @@
+{
+  "id": "f1480174-ec7c-42ec-828e-804a8484f520",
+  "prefix": "pf1",
+  "description": "partition function utility 1",
+  "body": "select\n    [filegroup_name] = fg.[name],\n    [schema_name] = object_schema_name(t.[object_id]),\n    table_name = t.[name],\n    i.index_id,\n    index_name = i.[name],\n    scheme_name = ps.[name],\n    function_name = pf.[name],\n    p.partition_number,\n    prv.[value],\n    [rows] = format(p.[rows], '#,###')\nfrom sys.tables t\ninner join sys.indexes i on t.[object_id] = i.[object_id]\ninner join sys.partitions p \n    on i.[object_id] = p.[object_id]\n    and i.index_id = p.index_id\nleft join sys.partition_schemes ps on i.data_space_id = ps.data_space_id\nleft join sys.partition_functions pf on pf.function_id = ps.function_id\nleft join sys.partition_range_values prv \n    on prv.function_id = ps.function_id\n    and prv.boundary_id = p.partition_number\nleft join sys.destination_data_spaces dds \n    on ps.data_space_id = dds.partition_scheme_id\n    and p.partition_number = dds.destination_id\ninner join sys.filegroups fg on coalesce(dds.data_space_id, i.data_space_id) = fg.data_space_id"
+}

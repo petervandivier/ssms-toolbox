@@ -1,0 +1,6 @@
+{
+  "id": "19d09f0b-953e-4f16-ae2b-10028b3b00b5",
+  "prefix": "zdata",
+  "description": "Dummmy Data",
+  "body": ";with getNums as ( select 1 as i union all select i + 1 from getNums where i < 100 )\n    , getData as (\n\tselect \n\t\ti,\n\t\tuuid  = newid(),\n\t\tvchar = convert(varchar(36),newid()),\n\t\tnum   = abs(checksum(newid())%1000),\n\t\tbool  = convert(bit,abs(checksum(newid())%2)-1),\n\t\tdt    = dateadd(day,checksum(newid())%1000,getutcdate())\n\tfrom getNums\n)\nselect *\nfrom getData gd;"
+}

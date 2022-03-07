@@ -1,0 +1,12 @@
+{
+  "id": "d12e2c82-c050-4da1-9021-3a71ea520ebb",
+  "prefix": "coap",
+  "description": "Create stored procedure",
+  "body": "create or alter proc $procedure_name$\n    @parameter_name AS INT\nas\nbegin;\n    set nocount on;\n    set xact_abort on;\n    \n    $SELECTEDTEXT$$CURSOR$\n    \n    return;\nend;\ngo\n",
+  "placeholders": [
+    {
+      "name": "procedure_name",
+      "defaultValue": "[schema].[procedure_name]"
+    }
+  ]
+}

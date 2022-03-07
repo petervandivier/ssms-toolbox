@@ -1,0 +1,6 @@
+{
+  "id": "04091cdc-24e6-40ee-97d4-857f7cf6f9ca",
+  "prefix": "ed209",
+  "description": "ED209 Hallpass Log",
+  "body": "$SELECTIONSTART$select * \r\nfrom DBAdmin.ED209.SpidHallPass\r\norder by Expires desc$SELECTIONEND$\r\n\r\n/*\r\nupdate DBAdmin.ED209.SpidHallPass set\r\n    Expires = dateadd(hour,52,getutcdate())\r\nwhere Spid = 76\r\n*/"
+}

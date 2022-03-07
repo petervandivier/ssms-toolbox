@@ -1,0 +1,6 @@
+{
+  "id": "1f1217fc-1e08-49ad-bf69-23c9f862a8f1",
+  "prefix": "scf2",
+  "description": "Select count(*) - simple",
+  "body": "select count_big(*) as cs from "
+}

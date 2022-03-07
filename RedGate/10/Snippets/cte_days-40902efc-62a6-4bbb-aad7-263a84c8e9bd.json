@@ -1,0 +1,6 @@
+{
+  "id": "40902efc-62a6-4bbb-aad7-263a84c8e9bd",
+  "prefix": "cte_days",
+  "description": "90 days worth of days",
+  "body": ";with day_rng as (\n    select cast(getdate() as date) as dt\n    union all \n    select dateadd(day,-1,dt)\n    from day_rng\n    where dt>dateadd(day,-90,getdate())\n)\nselect *\nfrom day_rng"
+}

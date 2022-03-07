@@ -1,0 +1,6 @@
+{
+  "id": "65e33b44-772b-456e-afc3-64987ed697f7",
+  "prefix": "qsa",
+  "description": "Query Store ad-hoc",
+  "body": "-- execute on secondary to avoid polluting the stats\r\nselect top 100 \r\n    qt.query_text_id,\r\n    qt.query_sql_text,\r\n    qt.statement_sql_handle,\r\n    qt.is_part_of_encrypted_module,\r\n    qt.has_restricted_text \r\nfrom sys.query_store_query_text as qt\r\nwhere qt.query_sql_text like '%cdc%'\r\n  and qt.query_sql_text like '%delete%'\r\n  and qt.query_sql_text like '%Listing%';\r\n\r\nselect * \r\nfrom sys.query_store_query q\r\nwhere q.query_text_id = 15009901;\r\n\r\nselect * \r\nfrom sys.query_store_plan as p\r\nwhere p.query_id = 764901342;"
+}

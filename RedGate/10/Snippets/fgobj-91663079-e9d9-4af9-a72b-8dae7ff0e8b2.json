@@ -1,0 +1,6 @@
+{
+  "id": "91663079-e9d9-4af9-a72b-8dae7ff0e8b2",
+  "prefix": "fgobj",
+  "description": "Get objects by FileGroup name",
+  "body": "-- https://basitaalishan.com/2013/03/03/list-all-objects-and-indexes-per-filegroup-partition/\r\n-- The following two queries return information about \r\n-- which objects belongs to which filegroup\r\nSELECT \r\n     object_schema_name(i.[object_id]) + '.' + object_name(i.[object_id]) AS [ObjectName]\r\n    ,i.[index_id] AS [IndexID]\r\n    ,i.[name] AS [IndexName]\r\n    ,i.[type_desc] AS [IndexType]\r\n    ,i.[data_space_id] AS [DatabaseSpaceID]\r\n    ,f.[name] AS [FileGroup]\r\n    ,d.[physical_name] AS [DatabaseFileName]\r\nFROM [sys].[indexes] i\r\nINNER JOIN [sys].[filegroups] f\r\n    ON f.[data_space_id] = i.[data_space_id]\r\nINNER JOIN [sys].[database_files] d\r\n    ON f.[data_space_id] = d.[data_space_id]\r\nINNER JOIN [sys].[data_spaces] s\r\n    ON f.[data_space_id] = s.[data_space_id]\r\nWHERE OBJECTPROPERTY(i.[object_id], 'IsUserTable') = 1\r\n  -- and f.[name] = 'Secondary'\r\nORDER BY OBJECT_NAME(i.[object_id])\r\n    ,f.[name]\r\n    ,i.[data_space_id];"
+}

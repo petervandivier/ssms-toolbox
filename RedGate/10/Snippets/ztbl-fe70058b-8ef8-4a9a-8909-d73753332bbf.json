@@ -1,0 +1,12 @@
+{
+  "id": "fe70058b-8ef8-4a9a-8909-d73753332bbf",
+  "prefix": "ztbl",
+  "description": "Dummy Table",
+  "body": "drop table if exists $table_name$;\ncreate table $table_name$ (\n\ti int not null identity primary key,\n\tuuid uniqueidentifier,\n\tvchar varchar(36),\n\tnum int,\n\tbool bit,\n\tdt datetime2\n);\n",
+  "placeholders": [
+    {
+      "name": "table_name",
+      "defaultValue": "foo"
+    }
+  ]
+}

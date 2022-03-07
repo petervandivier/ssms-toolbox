@@ -1,0 +1,16 @@
+{
+  "id": "bef68b5e-c61e-48c3-af15-e0651c012fd1",
+  "prefix": "crs",
+  "description": "Cursor",
+  "body": "declare $var1$ int;\n\ndeclare $cursor_name$ cursor \n\tlocal\n\tforward_only\n\tread_only\nfor\n    select $CURSOR$;\n\nopen $cursor_name$ \n\nfetch next from $cursor_name$ into $var1$;\n\nwhile @@fetch_status = 0\nbegin;\n\n    fetch next from $cursor_name$ into $var1$;    \nend;\n\nclose $cursor_name$;\ndeallocate $cursor_name$\n\n",
+  "placeholders": [
+    {
+      "name": "var1",
+      "defaultValue": ""
+    },
+    {
+      "name": "cursor_name",
+      "defaultValue": ""
+    }
+  ]
+}

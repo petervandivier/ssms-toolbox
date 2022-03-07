@@ -1,0 +1,12 @@
+{
+  "id": "03a54355-b32b-4c2d-b55b-dc9861e1d2d6",
+  "prefix": "ct",
+  "description": "Create table",
+  "body": "-- drop table if exists $table_name$;\ncreate table $table_name$ (\n",
+  "placeholders": [
+    {
+      "name": "table_name",
+      "defaultValue": "[schema].[table_name]"
+    }
+  ]
+}

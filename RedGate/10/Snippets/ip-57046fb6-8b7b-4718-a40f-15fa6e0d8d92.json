@@ -1,0 +1,6 @@
+{
+  "id": "57046fb6-8b7b-4718-a40f-15fa6e0d8d92",
+  "prefix": "ip",
+  "description": "session and connection information for a client IP address",
+  "body": "$SELECTIONSTART$\r\nselect \r\n    session_id,\r\n    connect_time,\r\n    protocol_type,\r\n    most_recent_sql_handle\r\nfrom sys.dm_exec_connections\r\nwhere client_net_address = '$PASTE$';\r\n\r\nselect \r\n    session_id,\r\n    login_time,\r\n    [host_name],\r\n    [program_name],\r\n    login_name,\r\n    [context_info],\r\n    last_request_start_time,\r\n    db_name(database_id) as db\r\nfrom sys.dm_exec_sessions\r\nwhere session_id in (\r\n    select session_id \r\n    from sys.dm_exec_connections\r\n    where client_net_address = '$PASTE$'\r\n);\r\n$SELECTIONEND$\r\n"
+}

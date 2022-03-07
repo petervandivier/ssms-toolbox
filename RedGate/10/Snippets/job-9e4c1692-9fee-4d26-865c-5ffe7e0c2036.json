@@ -1,0 +1,6 @@
+{
+  "id": "9e4c1692-9fee-4d26-865c-5ffe7e0c2036",
+  "prefix": "job",
+  "description": "Get job by job_id",
+  "body": "select * from msdb..sysjobs where job_id = "
+}

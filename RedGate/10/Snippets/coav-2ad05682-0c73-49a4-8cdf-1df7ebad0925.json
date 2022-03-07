@@ -1,0 +1,12 @@
+{
+  "id": "2ad05682-0c73-49a4-8cdf-1df7ebad0925",
+  "prefix": "coav",
+  "description": "Create view",
+  "body": "create or alter view $view_name$\n--WITH ENCRYPTION, SCHEMABINDING, VIEW_METADATA\nas\n    $SELECTEDTEXT$$CURSOR$\n-- WITH CHECK OPTION\ngo\n",
+  "placeholders": [
+    {
+      "name": "view_name",
+      "defaultValue": "[schema].[view_name]"
+    }
+  ]
+}

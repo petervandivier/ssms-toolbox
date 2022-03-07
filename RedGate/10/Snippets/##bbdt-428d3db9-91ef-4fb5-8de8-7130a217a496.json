@@ -1,0 +1,16 @@
+{
+  "id": "428d3db9-91ef-4fb5-8de8-7130a217a496",
+  "prefix": "##bbdt",
+  "description": "Unique range of date+time bounds in a ##Global_Temp_Table",
+  "body": "\ndrop table if exists ##batch_bounds_$MACHINE$; -- <-- careful with ##globals\ncreate table ##batch_bounds_$MACHINE$ (\n     start_dt datetime2(3) not null primary key\n    ,end_dt   datetime2(3) not null unique\n    ,check (end_dt > start_dt) \n);\n\nwith date_range as (\n    select cast('$start_date$' as datetime2) as dt\n    union all \n    select dateadd(day,1,dt)\n    from date_range\n    where dt<'$DATE$'\n), plus_some as ( -- manual additions to range\n   select dt from date_range\n   --union select '1753-01-01'\n   --union select '$DATE$'\n), _hours as (\n\tselect 0 h\n\tunion all \n\tselect h+$hours$\n\tfrom _hours\n\twhere h<(24-$hours$)\n), hour_rng as (\n    select _start = dateadd(hour,h.h,ps.dt)\n    from plus_some ps\n    cross join _hours h\n)\ninsert ##batch_bounds_$MACHINE$ (start_dt, end_dt)\nselect _start, convert(datetime2(3),dateadd(hour,$hours$,_start))\nfrom hour_rng\noption (maxrecursion 0);\n\nselect * from ##batch_bounds_$MACHINE$;",
+  "placeholders": [
+    {
+      "name": "hours",
+      "defaultValue": "3"
+    },
+    {
+      "name": "start_date",
+      "defaultValue": "2015-01-01"
+    }
+  ]
+}

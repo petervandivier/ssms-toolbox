@@ -1,0 +1,6 @@
+{
+  "id": "2f367e9d-6455-4714-b8a9-bc7603789ea4",
+  "prefix": "oideq",
+  "description": "where [object_id] = ...",
+  "body": "[object_id] = object_id('$CURSOR$')"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "02e6bf86-9914-4758-a50d-082617e8dbe3",
+  "prefix": "df2",
+  "description": "Database files for daily SQLChecks",
+  "body": "-- sp_spacedused\r\n\r\nselect\r\n    db_name() as [db_name],\r\n    df.name [FileName],\r\n    df.physical_name,\r\n    fg.name [FileGroup],\r\n    convert(decimal(10, 2), (fileproperty(df.name, 'SPACEUSED') / (df.size * 1.0)) * 100) as SpaceUsed,\r\n    convert(decimal(10, 2), 100 * (fileproperty(df.name, 'SPACEUSED') / (nullif(df.max_size,-1) * 1.0))) as SpaceUsedByMaxSize,\r\n    convert(decimal(10, 2),(df.size * 8192.) / power(1024.,3)) as size_gb\r\nfrom sys.database_files df\r\nleft join sys.filegroups fg on df.data_space_id = fg.data_space_id\r\nwhere df.type != 1\r\norder by fg.data_space_id;\r\n\r\nselect file_id,\r\n       type_desc,\r\n       data_space_id,\r\n       name,\r\n       physical_name,\r\n       state_desc,\r\n       convert(decimal(10,2),(size * 8192.)/power(1024.,3)) as size_gb,\r\n       convert(decimal(10,2),(nullif(max_size,-1) * 8192.)/power(1024.,3)) as max_size_gb,\r\n       convert(decimal(10,2),(growth * 8192.)/power(1024.,3)) as growth_gb,\r\n       differential_base_time\r\nfrom sys.database_files;\r\n"
+}

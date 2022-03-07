@@ -1,0 +1,6 @@
+{
+  "id": "7f5e2bf4-7580-48b5-b938-7eeec6414cb8",
+  "prefix": "st100",
+  "description": "SELECT top 100 rows",
+  "body": "select top(100) * \r\nfrom $CURSOR$;"
+}

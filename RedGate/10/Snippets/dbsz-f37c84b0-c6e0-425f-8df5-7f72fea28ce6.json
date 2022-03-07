@@ -1,0 +1,6 @@
+{
+  "id": "f37c84b0-c6e0-425f-8df5-7f72fea28ce6",
+  "prefix": "dbsz",
+  "description": "Sizes for all Dbs",
+  "body": ";with fs as (\n    select \n        database_id, \n        [type], \n        size = size * 8.0 / 1024 \n    from sys.master_files\n)\nselect\n    db = db_name(pvt.database_id),\n    [0]+[1]+isnull([2],0) as total_size_mb,\n    [0] as data_file_size_mb,\n    [1] as log_file_size_mb,\n    [2] as filestream_size_mb\nfrom fs\npivot (sum(size) for [type] in ([2],[1],[0]))pvt\norder by ([0]+[1]+isnull([2],0)) desc;"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "942a292f-cedc-4c9a-b3d2-d5520eca18f3",
+  "prefix": "logshrink",
+  "description": "Shrink a log file by batch",
+  "body": "use $DBNAME$\ngo\n\ndeclare \n    @cur_size int ,\n    @good_size int --= $target_size_mb$\n    ,@log_file_name sysname;\n\nselect \n\t@cur_size = (size*8192.)/power(1024.,2)\n\t,@log_file_name = [name]\nfrom sys.master_files \nwhere database_id = db_id(db_name())\n    and [type] = 1;\n\nwith steps as (\n    select cur_size = @cur_size\n    union all \n    select cur_size - 1024\n    from steps\n    where cur_size > isnull(@good_size,@cur_size * 0.5)\n)\nselect order_by='/*0*/\t',batch_cmd='use ['+db_name()+']\ngo'\nselect \n     order_by = '/*'+ltrim(str(row_number() over (order by cur_size desc)))+'*/'\n    ,batch_cmd = 'dbcc shrinkfile('+@log_file_name+',size='+ltrim(str(cur_size))+');\ngo'\nfrom steps\norder by cur_size desc;\n",
+  "placeholders": [
+    {
+      "name": "target_size_mb",
+      "defaultValue": ""
+    }
+  ]
+}

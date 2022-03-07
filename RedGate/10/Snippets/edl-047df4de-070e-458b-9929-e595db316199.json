@@ -1,0 +1,6 @@
+{
+  "id": "047df4de-070e-458b-9929-e595db316199",
+  "prefix": "edl",
+  "description": "Search the ED209 log",
+  "body": "$SELECTIONEND$\r\nselect \r\n    est = LogDateTime at time zone 'UTC' at time zone 'Eastern Standard Time',\r\n    LogDateTime,\r\n    Spid,\r\n    recipients,\r\n    [Subject],\r\n    [Message],\r\n    IsKill,\r\n    ExtraInfo\r\nfrom DBAdmin.ED209.Logs \r\nwhere [Message] like '%$PASTE$%'\r\n  and IsKill = 1\r\norder by LogDateTime desc;\r\n$SELECTIONEND$"
+}

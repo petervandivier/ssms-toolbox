@@ -1,0 +1,6 @@
+{
+  "id": "da9b6541-5016-4ebf-b1c4-dd0f68036ddb",
+  "prefix": "imo",
+  "description": "Get all DBs on server with IMO configured filegroups",
+  "body": "$SELECTIONSTART$drop table if exists #imo_db;\ncreate table #imo_db(db sysname);\ninsert #imo_db ( db )\nexec sys.sp_MSforeachdb N'use [?]\nselect db_name()\nfrom sys.filegroups\nwhere type=''FX'';';\nselect * from #imo_db;$SELECTIONEND$"
+}

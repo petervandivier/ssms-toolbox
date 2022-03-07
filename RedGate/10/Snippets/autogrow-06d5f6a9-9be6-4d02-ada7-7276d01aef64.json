@@ -1,0 +1,6 @@
+{
+  "id": "06d5f6a9-9be6-4d02-ada7-7276d01aef64",
+  "prefix": "autogrow",
+  "description": "Get autogrowth actions from the default trace",
+  "body": "\ndeclare @path nvarchar(260);\nselect @path = reverse(substring(reverse([path])\n                                ,charindex('\\',reverse([path]))\n                                ,260)\n                      )+N'log.trc'\nfrom sys.traces\nwhere is_default = 1;\n\nselect\n     DatabaseID\n    ,NTDomainName\n    ,HostName\n    ,ClientProcessID\n    ,ApplicationName\n    ,LoginName\n    ,[SPID]\n    ,Duration\n    ,StartTime\n    ,EndTime\n    ,IntegerData\n    ,ServerName\n    ,EventClass\n    ,DatabaseName\n    ,[FileName]\n    ,LoginSid\n    ,EventSequence\n    ,SessionLoginName\nfrom sys.fn_trace_gettable(@path, default)\nwhere EventClass in (92, 93)\n    and StartTime > dateadd(hour,-24,getdate());\n"
+}

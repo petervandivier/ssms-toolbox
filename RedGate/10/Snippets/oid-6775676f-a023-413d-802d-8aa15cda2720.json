@@ -1,0 +1,6 @@
+{
+  "id": "6775676f-a023-413d-802d-8aa15cda2720",
+  "prefix": "oid",
+  "description": "object_id()",
+  "body": "object_id('$CURSOR$')"
+}

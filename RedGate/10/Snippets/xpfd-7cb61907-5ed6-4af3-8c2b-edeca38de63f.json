@@ -1,0 +1,6 @@
+{
+  "id": "7cb61907-5ed6-4af3-8c2b-edeca38de63f",
+  "prefix": "xpfd",
+  "description": "Free space on fixed drives",
+  "body": "$SELECTIONSTART$\ndrop table if exists #xpfd;\ncreate table #xpfd (\n    drive char(1) not null primary key,\n    mb_free int not null,\n    gb_free as (convert(float,round(mb_free/1024.,2)))\n)\ninsert #xpfd ( drive, mb_free )\nexec xp_fixeddrives;\n\nselect * from #xpfd x;\n$SELECTIONEND$"
+}

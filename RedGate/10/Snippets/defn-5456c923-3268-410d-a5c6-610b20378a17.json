@@ -1,0 +1,6 @@
+{
+  "id": "5456c923-3268-410d-a5c6-610b20378a17",
+  "prefix": "defn",
+  "description": "Object Definition",
+  "body": "select object_definition(object_id('$PASTE$$CURSOR$'))"
+}

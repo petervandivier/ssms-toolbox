@@ -1,0 +1,6 @@
+{
+  "id": "073fc5f1-5ffc-43b7-8e8b-ef4331fd09ea",
+  "prefix": "agdb",
+  "description": "AG Details by DB Name",
+  "body": "\ndeclare \n    @dbName sysname = '$CURSOR$',\n    @agid uniqueidentifier,\n    @agName sysname;\n\nselect @agid = adc.group_id\nfrom sys.availability_databases_cluster adc\nwhere adc.[database_name] = @dbName;\n\nselect * \nfrom sys.availability_databases_cluster adc \nwhere adc.group_id = @agid\n\nselect [name] \nfrom sys.availability_groups\nwhere group_id = @agid;\n\nselect ar.replica_server_name,\n       ar.owner_sid,\n       ar.[endpoint_url],\n       mode = ar.[availability_mode],\n       mode_desc = ar.availability_mode_desc,\n       [failover_mode] = ar.failover_mode_desc,\n       ar.create_date,\n       ar.modify_date,\n       [seeding_mode] = ar.seeding_mode_desc \nfrom sys.availability_replicas ar\nwhere ar.group_id = @agid;\n"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "32f48f44-0d3f-4b51-837b-e050c54ea9c5",
+  "prefix": "docm",
+  "description": "DatabaseObjectChangeMaster - secret",
+  "body": "$SELECTIONSTART$\r\nselect top(100) * \r\nfrom DatabaseObjectChangeMaster.dbo.DatabaseObjectChangeMaster doc\r\nwhere doc.LoginName not in ( \r\n    'VIAGOGORS\\SQLPRODAGTSVC$',\r\n    'NT SERVICE\\SQLTELEMETRY',\r\n    'sa'\r\n)\r\n-- and doc.LoginName = '$USER$'\r\norder by doc.LogDate desc;\r\n$SELECTIONEND$"
+}

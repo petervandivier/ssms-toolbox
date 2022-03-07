@@ -1,0 +1,6 @@
+{
+  "id": "0bdfc264-42e5-46dd-a21c-9ec994f9bf91",
+  "prefix": "xs",
+  "description": "sp_executesql",
+  "body": "exec sp_executesql "
+}

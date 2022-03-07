@@ -1,0 +1,6 @@
+{
+  "id": "3c24ff86-adfb-4a5f-8c4c-146cd39039d9",
+  "prefix": "dbs",
+  "description": "SSF sys.dbs",
+  "body": "select d.log_reuse_wait_desc,* \nfrom sys.databases d\n--where d.name = '$DBNAME$'"
+}

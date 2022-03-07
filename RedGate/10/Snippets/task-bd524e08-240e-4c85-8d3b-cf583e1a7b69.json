@@ -1,0 +1,6 @@
+{
+  "id": "bd524e08-240e-4c85-8d3b-cf583e1a7b69",
+  "prefix": "task",
+  "description": "scheduler task and execution by identifier",
+  "body": "select * \r\nfrom scheduler.Task for system_time all\r\nwhere Identifier = '$PASTE$'\r\norder by SysEndTime desc;\r\n\r\nselect \r\n    est = StartDateTime at time zone 'UTC' at time zone 'Eastern Standard Time',\r\n    duration_minutes = datediff(minute,StartDateTime,EndDateTime),\r\n    * \r\nfrom scheduler.TaskExecution\r\nwhere TaskUid = (\r\n    select TaskUid \r\n    from scheduler.Task \r\n    where Identifier = '$PASTE$'\r\n)\r\norder by StartDateTime desc;"
+}

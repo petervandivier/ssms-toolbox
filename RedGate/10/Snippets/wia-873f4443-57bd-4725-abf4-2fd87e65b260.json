@@ -1,0 +1,6 @@
+{
+  "id": "873f4443-57bd-4725-abf4-2fd87e65b260",
+  "prefix": "wia",
+  "description": "Who Is Active?",
+  "body": "$SELECTIONSTART$exec sp_WhoIsActive$SELECTIONEND$"
+}

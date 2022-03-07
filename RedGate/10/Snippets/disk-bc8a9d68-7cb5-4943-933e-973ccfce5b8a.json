@@ -1,0 +1,6 @@
+{
+  "id": "bc8a9d68-7cb5-4943-933e-973ccfce5b8a",
+  "prefix": "disk",
+  "description": "Get-DbaDiskSpace",
+  "body": "select distinct\r\n    vs.volume_mount_point,\r\n    vs.file_system_type,\r\n    format( vs.total_bytes / power(1024.,3), 'N') as total_size_gb,\r\n    format( (vs.total_bytes - vs.available_bytes)/ power(1024.,3), 'N') as used_space_gb,\r\n    format( vs.available_bytes / power(1024.,3), 'N') as available_gb,\r\n    format( 100. * vs.available_bytes / vs.total_bytes , 'N' ) as space_free_pct\r\nfrom sys.master_files as f \r\ncross apply sys.dm_os_volume_stats(f.database_id, f.[file_id]) as vs;"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "aa4ec3db-b8d0-4578-86b3-dd158ba10172",
+  "prefix": "dbslp",
+  "description": "Databases that are the PRIMARY replica or LOCAL on this instance, exclude FORWARDERs",
+  "body": "select \n    ars.role_desc\n   ,ag_name = ag.[name]\n   ,adc.[database_name]\nfrom sys.availability_groups ag \njoin sys.dm_hadr_availability_replica_states ars on ars.group_id = ag.group_id\njoin sys.availability_databases_cluster adc on adc.group_id = ag.group_id\nwhere ars.is_local = 1\n    and ars.role_desc = 'PRIMARY'\n    and not exists (\n        select 1\n        from sys.availability_groups dag \n        join sys.availability_replicas fwd on fwd.group_id = dag.group_id\n        join sys.availability_groups ag2 on ag2.name = fwd.replica_server_name\n        join sys.availability_databases_cluster db on db.group_id = ag2.group_id\n        where dag.is_distributed = 1\n            and db.[database_name] = adc.[database_name]\n)\nunion all \nselect \n    'LOCAL_ONLY'\n   ,@@servername\n   ,[name]\nfrom sys.databases d \nwhere not exists (\n    select 1 \n    from sys.availability_databases_cluster adc\n    where adc.[database_name] = d.[name]\n);"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "f18ed6cf-058a-4c06-a3f8-5dc5d72fbc81",
+  "prefix": "te",
+  "description": "Task Execution Log",
+  "body": "-- https://github.com/taddison/tsqlScheduler\ndeclare @dt datetime2(3) = '$DATE$ $TIME$';\n\n;with last_run as (\n    select id=max(ExecutionID), taskId\n    from scheduler.TaskExecution \n    where TaskId in ($CURSOR$)\n    group by TaskId\n)\nselect top (100) \n\tDurationMin = datediff(minute\n                          ,te.StartDateTime\n                          ,iif(te.EndDateTime is null and te.ExecutionID = lr.ID\n                              ,getutcdate()\n                              ,te.EndDateTime))\n\t,* \nfrom scheduler.TaskExecution te\njoin last_run lr on lr.taskID = te.TaskID\n--where (te.IsError = 1 or te.EndDateTime is null)  \n\t-- and te.StartDateTime between dateadd(hour,-2,@dt) and dateadd(hour,2,@dt)\norder by te.StartDateTime desc;\t"
+}

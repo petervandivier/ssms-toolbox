@@ -1,0 +1,6 @@
+{
+  "id": "fc1fa3f2-47e9-408a-b71f-ff7b91978920",
+  "prefix": "bq",
+  "description": "block quote",
+  "body": "/*\n$SELECTEDTEXT$\n*/\n$CURSOR$"
+}

@@ -1,0 +1,6 @@
+{
+  "id": "82a56c82-ed1a-4e50-9759-a2454ba7e158",
+  "prefix": "wial_lr",
+  "description": "whoIsActiveLogging - long running queries",
+  "body": "\ndeclare \n\t @start datetime2 = ''\n\t,@end   datetime2 = '$DATE$ $TIME$'\n\t,@topN  tinyint   = 10;\n;with top_N as(\n    select \n        collection_time,\n        [dd hh:mm:ss.mss],\n        id = row_number() over (\n                partition by collection_time\n                order by \n                \ttry_convert(tinyint,left([dd hh:mm:ss.mss],2)) desc,\n                \ttry_convert(time,stuff([dd hh:mm:ss.mss],1,3,'')) desc )\n    from DBAdmin.logs.WhoIsActiveLogging \n    where collection_time between @start and @end\n        -- and session_id not in (341,872)\n)\nselect * \nfrom top_N \njoin DBAdmin.logs.WhoIsActiveLogging wial \n    on wial.collection_time = top_N.collection_time\n    and wial.[dd hh:mm:ss.mss] = top_N.[dd hh:mm:ss.mss]\nwhere top_N.id < @topN \norder by wial.collection_time desc, wial.[dd hh:mm:ss.mss] desc"
+}

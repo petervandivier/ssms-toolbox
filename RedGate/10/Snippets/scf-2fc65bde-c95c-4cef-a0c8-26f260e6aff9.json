@@ -1,0 +1,12 @@
+{
+  "id": "2fc65bde-c95c-4cef-a0c8-26f260e6aff9",
+  "prefix": "scf",
+  "description": "Count number of records returned by query",
+  "body": "\n-- select count_big(*) as cs from $table$; \nselect obj=object_schema_name([object_id])+'.'+object_name([object_id])\n      ,sum(row_count) as cs\nfrom sys.dm_db_partition_stats\nwhere (index_id = 0 or index_id = 1)\n    and try_cast(objectproperty([object_id],'IsUserTable') as bit)=1\n    and [object_id] = object_id('$table$')\ngroup by [object_id];\n",
+  "placeholders": [
+    {
+      "name": "table",
+      "defaultValue": ""
+    }
+  ]
+}

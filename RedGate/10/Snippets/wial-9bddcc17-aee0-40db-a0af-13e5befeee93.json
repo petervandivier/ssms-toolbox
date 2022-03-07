@@ -1,0 +1,6 @@
+{
+  "id": "9bddcc17-aee0-40db-a0af-13e5befeee93",
+  "prefix": "wial",
+  "description": "whoIsActiveLogging by session id",
+  "body": "select top (100) \n    est = collection_time at time zone 'UTC' at time zone 'Eastern Standard Time'\n   ,*\nfrom DBAdmin.logs.WhoIsActiveLogging \n-- where convert(nvarchar(max),sql_text) like '%$CURSOR$%'\n\t-- and collection_time < '$DATE$ '\n\t-- and session_id in ()\norder by collection_time desc; "
+}

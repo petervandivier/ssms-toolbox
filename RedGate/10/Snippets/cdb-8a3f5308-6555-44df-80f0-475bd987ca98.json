@@ -1,0 +1,12 @@
+{
+  "id": "8a3f5308-6555-44df-80f0-475bd987ca98",
+  "prefix": "cdb",
+  "description": "Create database",
+  "body": "/*$SELECTIONSTART$\ncreate database $db_name$;\ngo\nuse $db_name$\ngo\nexec sys.sp_changedbowner 'sa';\ngo$SELECTIONEND$\n*/\n\n-- drop database $db_name$;\n\n",
+  "placeholders": [
+    {
+      "name": "db_name",
+      "defaultValue": ""
+    }
+  ]
+}

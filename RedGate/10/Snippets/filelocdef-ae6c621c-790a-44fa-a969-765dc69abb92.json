@@ -1,0 +1,6 @@
+{
+  "id": "ae6c621c-790a-44fa-a969-765dc69abb92",
+  "prefix": "filelocdef",
+  "description": "Default path(s) for Backup, Data and Log files",
+  "body": "\n\nDECLARE @DataLoc nvarchar(2000)\n       ,@LogLoc nvarchar(2000)\n       ,@BackupLoc nvarchar(2000);\n \nEXEC master.dbo.xp_instance_regread\n       N'HKEY_LOCAL_MACHINE',\n       N'Software\\Microsoft\\MSSQLServer\\MSSQLServer',\n       N'DefaultData',\n       @DataLoc OUTPUT;\n \nEXEC master.dbo.xp_instance_regread\n       N'HKEY_LOCAL_MACHINE',\n       N'Software\\Microsoft\\MSSQLServer\\MSSQLServer',\n       N'DefaultLog',\n       @LogLoc OUTPUT;\n \nEXEC xp_instance_regread\n       N'HKEY_LOCAL_MACHINE',\n       N'SOFTWARE\\Microsoft\\MSSQLServer\\MSSQLServer',\n       N'BackupDirectory',\n       @BackupLoc OUTPUT;\n\nSELECT \n        @DataLoc   AS [Default Data Location],\n        @LogLoc    AS [Default Log Location],\n        @BackupLoc AS [Default Backup Location];\n\n"
+}

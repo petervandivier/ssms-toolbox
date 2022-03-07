@@ -1,0 +1,6 @@
+{
+  "id": "ef8c7499-80af-4633-bca5-bfc4f821b63f",
+  "prefix": "dvie",
+  "description": "Drop view IF EXISTS",
+  "body": "drop view if exists "
+}

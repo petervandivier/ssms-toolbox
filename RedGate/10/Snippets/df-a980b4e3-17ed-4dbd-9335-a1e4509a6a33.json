@@ -1,0 +1,6 @@
+{
+  "id": "a980b4e3-17ed-4dbd-9335-a1e4509a6a33",
+  "prefix": "df",
+  "description": "Database Files",
+  "body": "-- https://dba.stackexchange.com/a/7921/68127\nselect \n    [TYPE]           = A.[type_desc]\n   ,[FILE_Name]      = A.[name]\n   ,[FILEGROUP_NAME] = fg.[name]\n   ,File_Location    = A.physical_name\n   ,FILESIZE_MB      = convert(decimal(10, 2),  A.size/128.)\n   ,USEDSPACE_MB     = convert(decimal(10, 2),  A.size/128.-((size/128.)-cast(fileproperty(A.[name],'SPACEUSED') as int)/128.))\n   ,FREESPACE_MB     = convert(decimal(10, 2),  A.size/128.-             cast(fileproperty(A.[name],'SPACEUSED') as int)/128.)\n   ,[FREESPACE_%]    = convert(decimal(10, 2),((A.size/128.-             cast(fileproperty(A.[name],'SPACEUSED') as int)/128.) / (A.size/128.))*100)\n   ,AutoGrow = 'By '+iif(is_percent_growth=0,cast(growth/128 as varchar(10))+' MB -',cast(growth as varchar(10))+'% -')\n               +case max_size\n                    when 0  then 'DISABLED'\n                    when -1 then ' Unrestricted'\n                    else ' Restricted to '+cast(max_size / (128 * 1024) as varchar(10))+' GB'\n                end\n               +iif(is_percent_growth = 1, ' [autogrowth by percent, BAD setting!]', '')\nfrom sys.database_files A\nleft join sys.filegroups fg on A.data_space_id = fg.data_space_id\norder by \n    A.[type_desc]\n   ,A.[name];"
+}

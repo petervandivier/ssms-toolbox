@@ -1,0 +1,6 @@
+{
+  "id": "ce9555b1-ccf6-4f71-9485-c67e5592c9ed",
+  "prefix": "w2",
+  "description": "Cache sp_who2 and transform [LastBatch] to DateTime datatype",
+  "body": "\ndrop table if exists #spwho2;\n\ncreate table #spwho2 (\n    SPID        int not null,\n    [Status]    nvarchar(128),\n    [Login]     nvarchar(128),\n    HostName    nvarchar(128),\n    BlkBy       nvarchar(128),\n    DBName      nvarchar(128),\n    Command     nvarchar(128),\n    CPUTime     bigint,\n    DiskIO      bigint,\n    LastBatch   nvarchar(128),\n    ProgramName nvarchar(1000),\n    _SPID       int,\n    RequestID   int\n);\n\ninsert #spwho2 ( \n    SPID, Status, Login, HostName,\n    BlkBy, DBName, Command, CPUTime,\n    DiskIO, LastBatch, ProgramName,\n    _SPID, RequestID )\nexec sys.sp_who2;\n\nupdate #spwho2 set LastBatch = replace( replace( convert(char(4), year(getutcdate())) + '/' + LastBatch, ' ', 'T'), '/', '-');\nalter table #spwho2 alter column LastBatch datetime;\n\nselect *, t.[text]\nfrom   #spwho2 s\njoin dbo.sysprocesses p on p.spid = s.SPID\nouter apply sys.dm_exec_sql_text(p.[sql_handle]) t\nwhere s.SPID > 50\n--    and s.[Login] = '$USER$'\n--    and s.HostName = '$MACHINE$'\n--    and s.DBName = '$DBNAME$'\n"
+}

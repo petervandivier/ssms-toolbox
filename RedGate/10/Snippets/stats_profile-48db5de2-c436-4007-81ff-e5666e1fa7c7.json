@@ -1,0 +1,6 @@
+{
+  "id": "48db5de2-c436-4007-81ff-e5666e1fa7c7",
+  "prefix": "stats_profile",
+  "description": "Live rowcount & batch stats for long-running session",
+  "body": "-- set statistics profile on; <-- in remote session, as needed\n\nselect      p.node_id\n           ,p.physical_operator_name\n           ,sum(p.row_count) row_count\n           ,sum(p.estimate_row_count) as estimate_row_count\n           ,cast(sum(p.row_count) * 100 as float) / sum(nullif(p.estimate_row_count, 0)) as pct_complete\nfrom        sys.dm_exec_query_profiles p\nwhere       p.session_id = $CURSOR$\ngroup by    p.node_id ,p.physical_operator_name\norder by    p.node_id;\n"
+}

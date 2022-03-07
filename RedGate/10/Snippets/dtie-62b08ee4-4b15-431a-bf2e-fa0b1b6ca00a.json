@@ -1,0 +1,6 @@
+{
+  "id": "62b08ee4-4b15-431a-bf2e-fa0b1b6ca00a",
+  "prefix": "dtie",
+  "description": "DROP TABLE IF EXISTS",
+  "body": "drop table if exists "
+}

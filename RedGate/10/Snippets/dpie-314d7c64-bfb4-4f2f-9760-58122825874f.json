@@ -1,0 +1,6 @@
+{
+  "id": "314d7c64-bfb4-4f2f-9760-58122825874f",
+  "prefix": "dpie",
+  "description": "DROP PROCEDURE IF EXISTS...",
+  "body": "drop proc if exists "
+}

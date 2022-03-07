@@ -1,0 +1,6 @@
+{
+  "id": "ff975776-ce58-4ad4-adfd-33346c8b19c9",
+  "prefix": "tbl",
+  "description": "Get size of all tables in DB",
+  "body": "-- https://stackoverflow.com/a/7892349/4709762\n;with hobt as (\n    select \n         hobt_idx_id = min(i.index_id)\n        ,i.[object_id]\n    from sys.indexes i\n    group by i.[object_id]\n)\nselect TableName     = object_schema_name(t.[object_id])+'.'+object_name(t.[object_id])\n      ,RowCounts     =  sum(p.rows)\n      ,TotalSpaceKB  =  sum(a.total_pages)*8\n      ,TotalSpaceMB  = (sum(a.total_pages)*8)/1024.\n      ,UsedSpaceKB   =  sum(a.used_pages) *8\n      ,UsedSpaceMB   = (sum(a.used_pages) *8)/1024.\n      ,UnusedSpaceKB = (sum(a.total_pages)-sum(a.used_pages))*8\n      ,UnusedSpaceMB = (sum(a.total_pages)-sum(a.used_pages))*8/1024.\nfrom sys.tables t\njoin sys.indexes i on t.[object_id] = i.[object_id]\njoin hobt h \n    on i.[object_id] = h.[object_id]\n    and i.index_id = h.hobt_idx_id\njoin sys.partitions p \n    on i.[object_id] = p.[object_id]\n    and i.index_id = p.index_id\njoin sys.allocation_units a on p.[partition_id] = a.container_id\nleft join sys.schemas s on t.[schema_id] = s.[schema_id]\nwhere t.[name] not like 'dt%'\n    and t.is_ms_shipped = 0\n    and i.[object_id] > 255\ngroup by t.[object_id]\norder by TotalSpaceMB desc;\n"
+}

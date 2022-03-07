@@ -1,0 +1,6 @@
+{
+  "id": "4026d46e-eb87-451b-8f21-bfc443c304a6",
+  "prefix": "dloge",
+  "description": "Log space trend versus what it was a few seconds ago",
+  "body": "$SELECTIONSTART$-- https://docs.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-sqlperf-transact-sql\ndrop table if exists #sqlperf_logspace;\ncreate table #sqlperf_logspace (\n    id         int not null identity primary key,\n    db sysname unique,\n    size_mb    decimal(10,2),\n    pct_full   decimal(10,2),\n    _status    tinyint check (_status=0)\n);\n\ninsert #sqlperf_logspace (db,size_mb,pct_full,_status)\nexec (N'dbcc sqlperf(logspace);');\n\nif object_id('tempdb..#log_snap') is null\nbegin;\n    select *, getutcdate() as snap_dt \n    into #log_snap\n    from #sqlperf_logspace sl\nend;\n\n;with log_delta as (\n    select sl.*\n        , sl.pct_full - ls.pct_full as pct_growth\n        , datediff(second,ls.snap_dt,getutcdate()) as delta_sec\n    from #sqlperf_logspace sl\n    join #log_snap ls on ls.db = sl.db\n)\nselect *\n    , convert(decimal(10,2),((100.-pct_full)/nullif(pct_growth,0)) * ld.delta_sec/60.) as min_to_full\nfrom log_delta ld\nwhere ((100.-pct_full)/nullif(pct_growth,0)) * ld.delta_sec/60. > 0\n   and ld.pct_full > 10\norder by ld.pct_full desc;\n$SELECTIONEND$"
+}

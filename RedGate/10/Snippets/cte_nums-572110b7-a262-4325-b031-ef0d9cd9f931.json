@@ -1,0 +1,6 @@
+{
+  "id": "572110b7-a262-4325-b031-ef0d9cd9f931",
+  "prefix": "cte_nums",
+  "description": "Get a list of numbers",
+  "body": ";with nums as(\n\tselect 1 i\n\tunion all \n\tselect i+1\n\tfrom nums\n\twhere i<1e$SELECTIONSTART$6$SELECTIONEND$\n)\nselect i\nfrom nums\noption (maxrecursion 0);"
+}

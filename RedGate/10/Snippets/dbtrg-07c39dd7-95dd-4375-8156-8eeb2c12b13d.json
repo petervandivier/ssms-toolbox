@@ -1,0 +1,6 @@
+{
+  "id": "07c39dd7-95dd-4375-8156-8eeb2c12b13d",
+  "prefix": "dbtrg",
+  "description": "Get all Database-scoped TRIGGERS on the server",
+  "body": "$SELECTIONSTART$drop table if exists #all_db_triggers;\ncreate table #all_db_triggers (\n    db sysname,\n    tr sysname,\n    cs bigint,\n    def varchar(max)\n);\ninsert #all_db_triggers ( db, tr, cs, def )\nexec sys.sp_MSforeachdb N'use [?]\nselect db_name(), t.name, checksum(sm.definition), sm.definition\nfrom sys.triggers t\njoin sys.sql_modules sm on sm.[object_id] = t.[object_id]\nwhere t.parent_class=0';\nselect * from #all_db_triggers;$SELECTIONEND$"
+}

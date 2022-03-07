@@ -1,0 +1,6 @@
+{
+  "id": "ceadd5fc-accd-4a6d-a966-49bef938f23f",
+  "prefix": "est",
+  "description": "Cast to EST from DateTime w/o TZ but presumed UTC",
+  "body": "at time zone 'UTC' at time zone 'Eastern Standard Time'"
+}

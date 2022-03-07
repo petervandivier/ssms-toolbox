@@ -1,0 +1,12 @@
+{
+  "id": "cce28c0b-ea35-4118-88ae-1cf6f6e44bf7",
+  "prefix": "citf",
+  "description": "Create inline table-valued function",
+  "body": "CREATE FUNCTION $function_name$\n    (@parameter_name AS INT)\nRETURNS TABLE\n--WITH ENCRYPTION|SCHEMABINDING, ...\nAS\nRETURN ( $SELECTEDTEXT$$CURSOR$ )\nGO\n",
+  "placeholders": [
+    {
+      "name": "function_name",
+      "defaultValue": "[schema].[function_name]"
+    }
+  ]
+}

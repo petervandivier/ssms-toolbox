@@ -1,0 +1,6 @@
+{
+  "id": "31fbd95a-7143-4d59-9d5a-fe0304c861fe",
+  "prefix": "ssf",
+  "description": "SELECT * FROM fragment",
+  "body": "select * \r\nfrom $CURSOR$;"
+}

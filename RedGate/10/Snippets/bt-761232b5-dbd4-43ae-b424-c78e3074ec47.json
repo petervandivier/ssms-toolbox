@@ -1,0 +1,6 @@
+{
+  "id": "761232b5-dbd4-43ae-b424-c78e3074ec47",
+  "prefix": "bt",
+  "description": "Begin transaction",
+  "body": "begin tran\nselect @@trancount as trancount\n\n\t$SELECTEDTEXT$\n\t$CURSOR$\nrollback\n-- commit"
+}

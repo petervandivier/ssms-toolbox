@@ -1,0 +1,6 @@
+{
+  "id": "8217ff8c-efa7-43b2-aa4c-2b7ef170ba1e",
+  "prefix": "email",
+  "description": "Send a test DB Mail",
+  "body": "$SELECTIONSTART$\ndeclare @usr sysname = '$USER$'\n       ,@domain sysname = '@gmail.com' ;\ndeclare \n\t@subj nvarchar(255) = \n\t    N'test email from '+@@servername\n\t    +' at '+convert(nvarchar(23),getdate(),126),\n    @to sysname = \n    \tright(@usr,len(@usr)-patindex('%\\%',@usr))\n    \t+@domain;\n\nprint @to;\nprint @subj;\n\nexec msdb..sp_send_dbmail\n    --@profile_name = null, \n    @recipients = @to, \n    @subject = @subj,\n    @body = N'foo';\n$SELECTIONEND$\n"
+}

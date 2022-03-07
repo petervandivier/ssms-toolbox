@@ -1,0 +1,6 @@
+{
+  "id": "af42978b-c1fc-40bc-91ac-cd1eb592f8d1",
+  "prefix": "tblgrow",
+  "description": "Growth over time of largest N tables in DB",
+  "body": "-- requires TableSizeTracking\ndeclare \n    @db sysname = '$DBNAME$'\n    ,@days_back int = 30\n    ,@top_n int = 5\n\n;with top_n_for_t as (\n    select distinct top (@top_n)\n         tst.DatabaseName\n        ,tst.SchemaName\n        ,tst.TableName \n        ,MaxMb = max(tst.ReservedMB)\n    from DBAdmin.Logs.TableSizeTracking tst\n    where tst.DatabaseName = @db\n        and tst.LogDateTime > dateadd(day,-7,getdate())\n    group by\n        tst.DatabaseName\n        ,tst.SchemaName\n        ,tst.TableName \n    order by MaxMb desc\n)\nselect top(1000) \n    dt = convert(date,LogDateTime)\n   ,h = datepart(hour,tst.LogDateTime)\n   ,tst.DatabaseName\n   ,tst.SchemaName\n   ,tst.TableName\n   ,MaxMB = max(tst.ReservedMB)\nfrom DBAdmin.Logs.TableSizeTracking tst\njoin top_n_for_t tn \n    on tn.DatabaseName = tst.DatabaseName\n    and tn.SchemaName = tst.SchemaName\n    and tn.TableName = tst.TableName\nwhere tst.DatabaseName = @db\n    and tst.LogDateTime > dateadd(day,-@days_back,getdate())\ngroup by \n    convert(date,LogDateTime)\n   ,datepart(hour,tst.LogDateTime)\n   ,tst.DatabaseName\n   ,tst.SchemaName\n   ,tst.TableName\norder by \n    dt desc\n   ,h desc"
+}

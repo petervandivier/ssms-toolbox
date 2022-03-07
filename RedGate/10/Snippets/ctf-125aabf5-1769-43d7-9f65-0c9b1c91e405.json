@@ -1,0 +1,6 @@
+{
+  "id": "125aabf5-1769-43d7-9f65-0c9b1c91e405",
+  "prefix": "ctf",
+  "description": "create table foo()",
+  "body": "--drop table if exists foo;\ncreate table foo ( \n    i int identity not null primary key,\n    bar varchar(10)\n);"
+}

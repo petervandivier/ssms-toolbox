@@ -1,0 +1,6 @@
+{
+  "id": "60f7bf16-d29e-4277-bbd5-77398756ce00",
+  "prefix": "deps",
+  "description": "sysdepends",
+  "body": "select distinct\n    object_schema_name(id)+'.'+object_name(id) as name,\n    object_definition(id) as def\nfrom sys.sysdepends s\nwhere s.depid = object_id('$CURSOR$')\n    --and object_definition(id) like '%%'\norder by 1;"
+}

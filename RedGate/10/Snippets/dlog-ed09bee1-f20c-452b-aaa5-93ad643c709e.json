@@ -1,0 +1,6 @@
+{
+  "id": "ed09bee1-f20c-452b-aaa5-93ad643c709e",
+  "prefix": "dlog",
+  "description": "dbcc sqlperf(logspace)",
+  "body": "-- https://docs.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-sqlperf-transact-sql\ndrop table if exists #sqlperf_logspace;\ncreate table #sqlperf_logspace (\n    id         int not null identity primary key,\n    db sysname unique,\n    size_mb    decimal(10,4),\n    pct_full   decimal(10,4),\n    _status    tinyint check (_status=0)\n);\n\ninsert #sqlperf_logspace (db,size_mb,pct_full,_status)\nexec (N'dbcc sqlperf(logspace) with no_infomsgs;');\n\nselect sl.*, d.log_reuse_wait_desc, d.recovery_model_desc \nfrom #sqlperf_logspace sl\nleft join sys.databases d on d.[name] = sl.db\norder by pct_full desc;\n"
+}

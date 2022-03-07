@@ -1,0 +1,6 @@
+{
+  "id": "cff68e9a-a725-48ec-9777-b7db25559e90",
+  "prefix": "wialx",
+  "description": "WhoIsActiveLogging - for export",
+  "body": "select top (100) \n    event_bst = convert(datetime,(collection_time at time zone 'UTC') at time zone 'GMT Standard Time')\n   ,[dd hh:mm:ss.mss]\n   ,session_id\n   ,sql_text = left(convert(varchar(max),sql_text),1000)\n   ,login_name\n   ,wait_info\n   ,CPU = convert(bigint,replace(CPU,',',''))\n   ,tempdb_allocations =convert(bigint,replace(tempdb_allocations,',',''))\n   ,tempdb_current =convert(bigint,replace(tempdb_current,',',''))\n   ,blocking_session_id\n   ,blocked_session_count=convert(bigint,replace(blocked_session_count,',',''))\n   ,reads=convert(bigint,replace(reads,',',''))\n   ,writes=convert(bigint,replace(writes,',',''))\n   ,physical_reads=convert(bigint,replace(physical_reads,',',''))\n   ,used_memory=convert(bigint,replace(used_memory,',',''))\n   ,status\n   ,open_tran_count=convert(bigint,replace(open_tran_count,',',''))\n   ,percent_complete=convert(decimal(10,2),percent_complete)\n   ,host_name\n   ,database_name\n   ,program_name\n   ,start_time\n   ,login_time\n   ,request_id\n   ,collection_time\nfrom DBAdmin.logs.WhoIsActiveLogging \n--where convert(time,collection_time) between '08:00' and '08:45'\n--and collection_time >= '2018-05-11'\norder by collection_time desc; "
+}

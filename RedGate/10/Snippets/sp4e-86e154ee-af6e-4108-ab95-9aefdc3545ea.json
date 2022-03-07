@@ -1,0 +1,6 @@
+{
+  "id": "86e154ee-af6e-4108-ab95-9aefdc3545ea",
+  "prefix": "sp4e",
+  "description": "For each DB",
+  "body": "exec sys.sp_MSforeachdb N'use [?]\n$CURSOR$\n';"
+}
