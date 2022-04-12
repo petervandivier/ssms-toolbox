@@ -1,0 +1,6 @@
+{
+  "id": "ecf41d6e-7e15-46c7-a33c-759f87e4e852",
+  "prefix": "idx2",
+  "description": "SqlChecks:Get-OversizeIndexes",
+  "body": "select\r\n    db_name() as DatabaseName,\r\n    schema_name(o.schema_id) as 'SchemaName',\r\n    o.name as TableName,\r\n    i.name as IndexName,\r\n    i.type_desc as IndexType,\r\n    sum(max_length) as RowLength,\r\n    count(ic.index_id) as 'ColumnCount'\r\nfrom sys.indexes i (nolock)\r\ninner join sys.objects o (nolock) on i.object_id = o.object_id\r\ninner join sys.index_columns ic (nolock) on ic.object_id = i.object_id\r\n                                        and ic.index_id = i.index_id\r\ninner join sys.columns c (nolock) on c.object_id = ic.object_id\r\n                                 and c.column_id = ic.column_id\r\nwhere o.type = 'U'\r\n  and i.index_id > 0\r\n  and ic.is_included_column = 0\r\ngroup by o.schema_id,\r\n         o.object_id,\r\n         o.name,\r\n         i.object_id,\r\n         i.name,\r\n         i.index_id,\r\n         i.type_desc\r\nhaving (sum(max_length) > case when i.type_desc = 'NONCLUSTERED' then 1700 else\r\n                                                                               900 end\r\n)\r\norder by 1,\r\n         2,\r\n         3;"
+}
