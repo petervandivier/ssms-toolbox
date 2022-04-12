@@ -6,17 +6,17 @@ Space Used for daily checks
 use $CURSOR$;
 
 select
-    db_name() as [db_name],
-    df.name [FileName],
+    db_name() as DbName,
+    df.name   as [FileName],
     df.physical_name,
-    fg.name [FileGroup],
-    convert(decimal(10, 2), (fileproperty(df.name, 'SPACEUSED') / (df.size * 1.0)) * 100) as SpaceUsed,
-    convert(decimal(10, 2), 100 * (fileproperty(df.name, 'SPACEUSED') / (nullif(df.max_size,-1) * 1.0))) as SpaceUsedByMaxSize,
+    fg.name   as [FileGroup],
+    SpaceUsedPct          = convert(decimal(10, 2), (fileproperty(df.name, 'SPACEUSED') / (df.[size] * 1.0)) * 100),
+    SpaceUsedPctByMaxSize = convert(decimal(10, 2), 100 * (fileproperty(df.name, 'SPACEUSED') / (nullif(df.max_size,-1) * 1.0))),
     -- df.size as size_pgs,
-    convert(decimal(10, 2),(df.size * 8192.) / power(1024.,3)) as size_gb
+    SizeGb                = convert(decimal(10, 2),(df.[size] * 8192.) / power(1024.,3))
 from sys.database_files df
 left join sys.filegroups fg on df.data_space_id = fg.data_space_id
-where df.type != 1
+where df.[type] != 1
 order by fg.data_space_id;
 
 select file_id,
