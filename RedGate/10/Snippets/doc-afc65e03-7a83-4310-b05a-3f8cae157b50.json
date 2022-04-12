@@ -2,5 +2,5 @@
   "id": "afc65e03-7a83-4310-b05a-3f8cae157b50",
   "prefix": "doc",
   "description": "DatabaseObjectChange - secret",
-  "body": "$SELECTIONSTART$\r\nselect top(100) * \r\nfrom DatabaseObjectChange.dbo.DatabaseObjectChange doc\r\nwhere doc.LoginName not in ( \r\n    'VIAGOGORS\\SQLPRODAGTSVC$',\r\n    'NT SERVICE\\SQLTELEMETRY',\r\n    'sa'\r\n)\r\n-- and doc.LoginName = '$USER$'\r\norder by doc.LogDate desc;\r\n$SELECTIONEND$"
+  "body": "$SELECTIONSTART$\r\nselect top(100) * \r\nfrom DatabaseObjectChange.dbo.DatabaseObjectChange doc\r\nwhere doc.ObjectName = '$CURSOR$'\r\n-- and doc.LoginName = '$USER$'\r\norder by doc.LogDate desc;\r\n$SELECTIONEND$"
 }
