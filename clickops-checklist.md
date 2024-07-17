@@ -18,3 +18,10 @@ Tools > Options | Text Editor > Transact-SQL > Intellisense | Casing for built-i
 
 Tools > Options | Text Editor > Transact-SQL > General | :heavy_check_mark: "Line Numbers
 
+## Empty environment on launch
+
+Tools > Options | Environment > Startup | At startup: > Open empty environment
+
+HT https://stackoverflow.com/a/16581591/4709762 
+
+Connection dialogue is blocking & will prevent RedGate SQL Prompt session reconnection in some circumstances AFAICT
