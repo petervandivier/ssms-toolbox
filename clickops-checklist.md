@@ -25,3 +25,12 @@ Tools > Options | Environment > Startup | At startup: > Open empty environment
 HT https://stackoverflow.com/a/16581591/4709762 
 
 Connection dialogue is blocking & will prevent RedGate SQL Prompt session reconnection in some circumstances AFAICT
+
+## Toggle Word Wrap quick option toggle
+
+HT https://stackoverflow.com/a/47737665/4709762
+
+Right Click Toolbar > Customize | Commands Tab > Choose "SQL Editor" in the 2nd Radio Button's Drop-down > Add Command > Toggle Word Wrap
+
+In the "Add Command" interface, you can type to fast-scroll.
+
