@@ -34,3 +34,6 @@ Right Click Toolbar > Customize | Commands Tab > Choose "SQL Editor" in the 2nd 
 
 In the "Add Command" interface, you can type to fast-scroll.
 
+> ⚠️ **DO NOT TRUST THE TOOL-TIP** - the suggested hotkey appears to be inherited from Visual Studio but is overridden by the "Execute" command in SSMS.
+
+Attempting to hotkey toggle word-wrap in this context is the equivalent of pressing <kbd>F5</kbd>
