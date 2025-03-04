@@ -16,7 +16,7 @@ foreach($install in $SsmsInventory){
     $file = Join-Path $install.DirectoryName "ssms.pkgundef"
     
     # take a backup first
-    Copy-Item $file "~/Desktop/ssms_$(Get-Date -Format "yyyy-MM-ddThh.mm.ss").pkgundef" 
+    Copy-Item $file "$($install.DirectoryName)/ssms_$(Get-Date -Format FileDateTimeUniversal).pkgundef" 
     
     # default is "enable"
     if($disable){
