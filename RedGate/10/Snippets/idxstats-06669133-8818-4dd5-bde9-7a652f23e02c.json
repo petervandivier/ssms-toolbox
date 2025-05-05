@@ -1,0 +1,20 @@
+{
+  "id": "06669133-8818-4dd5-bde9-7a652f23e02c",
+  "prefix": "idxstats",
+  "description": "Index usage stats by index_name and table_name",
+  "body": "use $db_name$\r\ngo\r\n\r\nselect \r\n    concat(\r\n        object_schema_name(i.[object_id]),\r\n        N'.',\r\n        object_name(i.[object_id])\r\n    ) as schema_table_name,\r\n    i.[name] as index_name,\r\n    ius.*\r\nfrom sys.dm_db_index_usage_stats as ius\r\njoin sys.indexes as i \r\n    on i.index_id = ius.index_id\r\n    and i.[object_id] = ius.[object_id]\r\nwhere ius.[object_id] = object_id(N'$schema_table_name$')\r\n    and i.[name] = N'$index_name$';\r\n",
+  "placeholders": [
+    {
+      "name": "db_name",
+      "defaultValue": ""
+    },
+    {
+      "name": "index_name",
+      "defaultValue": null
+    },
+    {
+      "name": "schema_table_name",
+      "defaultValue": null
+    }
+  ]
+}
