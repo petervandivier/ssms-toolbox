@@ -1,0 +1,12 @@
+{
+  "id": "c9d75b7b-202c-4eef-9352-549900b720f8",
+  "prefix": "xecr",
+  "description": "Extended Event Consume (RDS)",
+  "body": "print @@servername -- \r\nprint getutcdate() -- \r\n\r\nselect                     -- (duration)\r\n    count(*),              -- \r\n    min(rf.timestamp_utc), -- \r\n    max(rf.timestamp_utc)  -- \r\nfrom sys.fn_xe_file_target_read_file('D:\\rdsdbdata\\Log\\$prefix$*', null, null, null) as rf \r\n\r\ndrop table if exists #xe;\r\n\r\nselect --top 10 \r\n    rf.[object_name],\r\n    rf.timestamp_utc,\r\n    convert(decimal(10,2),null) as duration_ms,\r\n    event_data as text_data,\r\n    try_convert(xml,rf.event_data) as xml_data,\r\n    rf.[file_name],\r\n    left(\r\n        right(\r\n            rf.[file_name],\r\n            22\r\n        ),\r\n        18\r\n    ) as windows_filetime\r\ninto #xe\r\nFROM sys.fn_xe_file_target_read_file('D:\\rdsdbdata\\Log\\$prefix$*', null, null, null) as rf;\r\n\r\n--alter table #xe add duration_ms decimal(10,2);\r\nupdate #xe set\r\n    duration_ms = round(xml_data.value('(/event/data[@name=\"duration\"]/value)[1]','bigint') / 1000.0,2)\r\n;\r\n\r\nselect top 10 * \r\nfrom #xe;\r\n",
+  "placeholders": [
+    {
+      "name": "prefix",
+      "defaultValue": null
+    }
+  ]
+}
