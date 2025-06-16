@@ -1,5 +1,5 @@
 /*
-object_definition(object_id());
+object_definition(object_id())
 */
 
-object_definition(object_id('$CURSOR$'));
+object_definition(object_id('$CURSOR$'))

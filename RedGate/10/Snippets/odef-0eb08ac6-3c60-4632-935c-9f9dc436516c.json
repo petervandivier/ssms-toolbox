@@ -1,6 +1,6 @@
 {
   "id": "0eb08ac6-3c60-4632-935c-9f9dc436516c",
   "prefix": "odef",
-  "description": "object_definition(object_id());",
-  "body": "object_definition(object_id('$CURSOR$'));"
+  "description": "object_definition(object_id())",
+  "body": "object_definition(object_id('$CURSOR$'))"
 }
