@@ -1,23 +1,25 @@
+/*
+text format sp_spaceused
+*/
 
 drop table if exists #spaceused;
 create table #spaceused (
-    table_name sysname,
-    [rows]     bigint,
-    reserved   varchar(100),
-    [data]     varchar(100),
-    index_size varchar(100),
-    unused     varchar(100),
+    table_name       sysname,
+    [rows]           bigint,
+    reserved         nvarchar(128) not null,
+    [data]           nvarchar(128) not null,
+    index_size       nvarchar(128) not null,
+    unused           nvarchar(128) not null,
     rows_int64       as try_convert(bigint,left([rows]    ,len([rows]    )-3)),
     reserved_int64   as try_convert(bigint,left(reserved  ,len(reserved  )-3)),
     data_int64       as try_convert(bigint,left([data]    ,len([data]    )-3)),
     index_size_int64 as try_convert(bigint,left(index_size,len(index_size)-3)),
     unused_int64     as try_convert(bigint,left(unused    ,len(unused    )-3)),
-    rows_text        varchar(100),
-    reserved_text    varchar(100),
-    data_text        varchar(100),
-    index_size_text  varchar(100),
-    unused_text      varchar(100),
-
+    rows_text        nvarchar(128),
+    reserved_text    nvarchar(128),
+    data_text        nvarchar(128),
+    index_size_text  nvarchar(128),
+    unused_text      nvarchar(128),
 );
 
 insert into #spaceused (
@@ -83,3 +85,19 @@ select
     unused_text
 from #spaceused;
 go
+select
+    [property],
+    [value]
+from #spaceused as s
+unpivot (
+    [value] for [property] in (
+        table_name,
+        rows_text,
+        reserved_text,
+        data_text,
+        index_size_text,
+        unused_text
+    )
+) as pvt
+go
+
