@@ -86,7 +86,7 @@ select
 from #spaceused;
 go
 select
-    [property],
+    replace([property], '_text', '') as [property],
     [value]
 from #spaceused as s
 unpivot (
