@@ -1,0 +1,6 @@
+{
+  "id": "3176938c-f9b1-4052-8ce1-e71674710845",
+  "prefix": "son",
+  "description": "schema_object_name",
+  "body": "    concat(\r\n        object_schema_name([object_id]),\r\n        N'.',\r\n        object_name([object_id])\r\n    ) as schema_object_name,"
+}
