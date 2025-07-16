@@ -1,0 +1,6 @@
+{
+  "id": "f0b5bb87-f3b1-40ce-aff9-a655131e265c",
+  "prefix": "rdserr",
+  "description": "rds_read_error_log",
+  "body": "exec rdsadmin.dbo.rds_read_error_log -- $CURSOR$\r\n    @index       = 0,              -- int\r\n    @type        = 0,              -- int\r\n    @search_str1 = N'',            -- nvarchar(255)\r\n    @search_str2 = N'',            -- nvarchar(255)\r\n    @start_time  = '$DATE$$TIME$', -- datetime\r\n    @end_time    = '$DATE$$TIME$', -- datetime\r\n    @sort_order  = N''             -- nvarchar(4)\r\n;\r\n"
+}
