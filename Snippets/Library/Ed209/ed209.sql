@@ -2,9 +2,9 @@
 ED209 Hallpass Log
 */
 
-$SELECTIONSTART$select * 
+select * 
 from DBAdmin.ED209.SpidHallPass
-order by Expires desc$SELECTIONEND$
+order by Expires desc
 
 /*
 update DBAdmin.ED209.SpidHallPass set
