@@ -1,6 +1,0 @@
-{
-  "id": "c9ae58aa-5eac-4f29-ae9d-5da8e2c2157c",
-  "prefix": "tn",
-  "description": "Scheduler.Task by name",
-  "body": "-- https://github.com/taddison/tsqlScheduler\n-- select * from scheduler.GetTaskID('$PASTE$', 1);\nselect * \nfrom scheduler.Task\nwhere Identifier like '%$PASTE$%';"
-}

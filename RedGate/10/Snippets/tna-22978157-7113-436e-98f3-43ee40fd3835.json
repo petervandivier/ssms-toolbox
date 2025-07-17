@@ -1,6 +1,0 @@
-{
-  "id": "22978157-7113-436e-98f3-43ee40fd3835",
-  "prefix": "tna",
-  "description": "Task(s) by name - all scheduler DBs",
-  "body": "declare @t table ( db sysname, task sysname, cmd nvarchar(4000), e bit, d bit);\n\ninsert @t (db, task, cmd, e, d)\nexec sys.sp_MSforeachdb N'use [?]\nif schema_id(''scheduler'') is not null \n    select db_name(), identifier, tsqlCommand, isEnabled, isDeleted\n    from scheduler.Task\n    where Identifier like ''%$PASTE$$CURSOR$%'';\n';\nselect * from @t"
-}

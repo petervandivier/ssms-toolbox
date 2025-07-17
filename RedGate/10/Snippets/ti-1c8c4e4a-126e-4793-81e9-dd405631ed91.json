@@ -1,6 +1,0 @@
-{
-  "id": "1c8c4e4a-126e-4793-81e9-dd405631ed91",
-  "prefix": "ti",
-  "description": "Scheduler.Task",
-  "body": "-- https://github.com/taddison/tsqlScheduler\nselect * \nfrom scheduler.Task t \nwhere $CURSOR$$PASTE$;"
-}
