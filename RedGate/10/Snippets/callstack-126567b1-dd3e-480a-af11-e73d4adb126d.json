@@ -1,6 +1,0 @@
-{
-  "id": "126567b1-dd3e-480a-af11-e73d4adb126d",
-  "prefix": "callstack",
-  "description": "SQL Spelunker - use in Powershell",
-  "body": "-- https://github.com/taddison/SQLSpelunker\n$SELECTIONSTART$cd ~\\git\\SQLSpelunker\\src\\SQLSpelunker.Console\ndotnet run --c \"server=$SERVER$;initial catalog=$DBNAME$;integrated security=sspi\" --s \"exec $PASTE$;\" > ~\\Desktop\\$PASTE$_callstack.txt$SELECTIONEND$\n~\\Desktop\\$PASTE$_callstack.txt$SELECTIONEND$"
-}
